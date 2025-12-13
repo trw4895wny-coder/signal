@@ -1,8 +1,20 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { getUser } from './auth/actions/auth'
+import { createClient } from '@/lib/supabase/server'
 
-export default async function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: { code?: string }
+}) {
+  // Handle email confirmation code
+  if (searchParams.code) {
+    const supabase = await createClient()
+    await supabase.auth.exchangeCodeForSession(searchParams.code)
+    redirect('/profile')
+  }
+
   const user = await getUser()
 
   if (user) {
