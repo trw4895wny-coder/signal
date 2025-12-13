@@ -27,7 +27,8 @@ export async function signUp(formData: FormData) {
   }
 
   // Profile is auto-created by database trigger
-  redirect('/profile')
+  // Redirect to confirmation page
+  redirect(`/auth/confirm-email?email=${encodeURIComponent(email)}`)
 }
 
 export async function signIn(formData: FormData) {
