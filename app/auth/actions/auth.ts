@@ -11,9 +11,14 @@ export async function signUp(formData: FormData) {
   const password = formData.get('password') as string
   const fullName = formData.get('full_name') as string
 
-  const { data: authData, error: authError } = await supabase.auth.signUp({
+  const { error: authError } = await supabase.auth.signUp({
     email,
     password,
+    options: {
+      data: {
+        full_name: fullName,
+      },
+    },
   })
 
   if (authError) {
@@ -21,23 +26,7 @@ export async function signUp(formData: FormData) {
     redirect('/auth/signup?error=true')
   }
 
-  if (authData.user) {
-    // Create profile
-    const profileData: Database['public']['Tables']['profiles']['Insert'] = {
-      id: authData.user.id,
-      email,
-      full_name: fullName,
-    }
-
-    // @ts-ignore - Supabase type inference issue
-    const { error: profileError } = await supabase.from('profiles').insert(profileData)
-
-    if (profileError) {
-      console.error('Profile creation error:', profileError.message)
-      redirect('/auth/signup?error=true')
-    }
-  }
-
+  // Profile is auto-created by database trigger
   redirect('/profile')
 }
 
