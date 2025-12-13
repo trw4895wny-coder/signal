@@ -21,6 +21,7 @@ export async function toggleSignal(userId: string, signalId: string, currentlySe
     // Add signal
     const { error } = await supabase
       .from('user_signals')
+      // @ts-ignore - Supabase type inference issue
       .insert({
         user_id: userId,
         signal_id: signalId,

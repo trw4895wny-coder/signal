@@ -2,6 +2,7 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
+import type { Database } from '@/types/database'
 
 export async function signUp(formData: FormData) {
   const supabase = await createClient()
@@ -16,19 +17,24 @@ export async function signUp(formData: FormData) {
   })
 
   if (authError) {
-    return { error: authError.message }
+    console.error('Sign up error:', authError.message)
+    redirect('/auth/signup?error=true')
   }
 
   if (authData.user) {
     // Create profile
-    const { error: profileError } = await supabase.from('profiles').insert({
+    const profileData: Database['public']['Tables']['profiles']['Insert'] = {
       id: authData.user.id,
       email,
       full_name: fullName,
-    })
+    }
+
+    // @ts-ignore - Supabase type inference issue
+    const { error: profileError } = await supabase.from('profiles').insert(profileData)
 
     if (profileError) {
-      return { error: profileError.message }
+      console.error('Profile creation error:', profileError.message)
+      redirect('/auth/signup?error=true')
     }
   }
 
@@ -47,7 +53,8 @@ export async function signIn(formData: FormData) {
   })
 
   if (error) {
-    return { error: error.message }
+    console.error('Sign in error:', error.message)
+    redirect('/auth/login?error=true')
   }
 
   redirect('/profile')

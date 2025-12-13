@@ -54,9 +54,6 @@ export default async function ProfilePage() {
         <div className="space-y-8">
           {categories.map((category) => {
             const signals = signalsByCategory[category.id] || []
-            const categoryUserSignals = userSignals.filter(
-              (us) => us.signal.category_id === category.id
-            )
 
             return (
               <div key={category.id} className="bg-white rounded-lg p-6 shadow-sm">
