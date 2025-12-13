@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 import { getUser, signOut } from '../auth/actions/auth'
 import { getSignalCategories, getSignalsByCategory, getUserSignals } from '@/lib/signals'
-import { SignalSelector } from '@/components/signals/SignalSelector'
+import { ProfileView } from '@/components/profiles/ProfileView'
 import Link from 'next/link'
 
 export default async function ProfilePage() {
@@ -44,46 +44,12 @@ export default async function ProfilePage() {
       </header>
 
       <main className="max-w-4xl mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-light mb-2">Your signals</h1>
-          <p className="text-gray-600">
-            Select up to 5 signals that represent your current professional state
-          </p>
-        </div>
-
-        <div className="space-y-8">
-          {categories.map((category) => {
-            const signals = signalsByCategory[category.id] || []
-
-            return (
-              <div key={category.id} className="bg-white rounded-lg p-6 shadow-sm">
-                <SignalSelector
-                  userId={user.id}
-                  categoryId={category.id}
-                  categoryName={category.name}
-                  signals={signals}
-                  userSignals={userSignals}
-                />
-              </div>
-            )
-          })}
-        </div>
-
-        {userSignals.length > 0 && (
-          <div className="mt-8 bg-white rounded-lg p-6 shadow-sm">
-            <h3 className="font-medium text-gray-900 mb-4">Your active signals</h3>
-            <div className="flex flex-wrap gap-2">
-              {userSignals.map((us) => (
-                <span
-                  key={us.id}
-                  className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-gray-100 text-gray-800"
-                >
-                  {us.signal.label}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
+        <ProfileView
+          userId={user.id}
+          categories={categories}
+          signalsByCategory={signalsByCategory}
+          userSignals={userSignals}
+        />
       </main>
     </div>
   )
