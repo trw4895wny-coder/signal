@@ -1,6 +1,14 @@
 import Link from 'next/link'
+import { redirect } from 'next/navigation'
+import { getUser } from './auth/actions/auth'
 
-export default function Home() {
+export default async function Home() {
+  const user = await getUser()
+
+  if (user) {
+    redirect('/profile')
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
       <div className="text-center max-w-lg">
