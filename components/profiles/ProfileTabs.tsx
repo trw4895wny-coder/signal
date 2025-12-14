@@ -40,6 +40,7 @@ export function ProfileTabs({ userId }: ProfileTabsProps) {
             (sum: number, conv: any) => sum + (conv.unread_count || 0),
             0
           )
+          console.log('[ProfileTabs] Total unread messages:', totalUnread, 'from', conversations.length, 'conversations')
           setUnreadMessagesCount(totalUnread)
         }
       } catch (error) {
@@ -58,6 +59,7 @@ export function ProfileTabs({ userId }: ProfileTabsProps) {
 
     // Listen for messagesRead event to refresh immediately
     const handleMessagesRead = () => {
+      console.log('[ProfileTabs] messagesRead event received, fetching unread count...')
       fetchUnreadCount()
     }
     window.addEventListener('messagesRead', handleMessagesRead)

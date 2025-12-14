@@ -47,7 +47,8 @@ export function ConversationList({
 
   // Refresh when refreshTrigger changes
   useEffect(() => {
-    if (refreshTrigger !== undefined) {
+    if (refreshTrigger !== undefined && refreshTrigger > 0) {
+      console.log('[ConversationList] Refresh triggered, fetching conversations...')
       fetchConversations()
     }
   }, [refreshTrigger])
@@ -57,6 +58,11 @@ export function ConversationList({
       const response = await fetch('/api/conversations')
       if (response.ok) {
         const data = await response.json()
+        console.log('[ConversationList] Fetched conversations:', data.map((c: any) => ({
+          connection_id: c.connection_id,
+          other_user: c.other_user.full_name || c.other_user.email,
+          unread_count: c.unread_count
+        })))
         setConversations(data)
       }
     } catch (error) {
