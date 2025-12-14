@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import {
   HomeIcon,
   SignalIcon,
+  MagnifyingGlassIcon,
   UserGroupIcon,
   ChatBubbleLeftRightIcon,
   ChartBarIcon,
@@ -125,6 +126,12 @@ export function ProfileSidebar({ userId, isMobileMenuOpen, onMobileMenuClose }: 
       badge: null,
     },
     {
+      name: 'Discover',
+      href: '/discover',
+      icon: MagnifyingGlassIcon,
+      badge: null,
+    },
+    {
       name: 'Connections',
       href: '/profile/connections',
       icon: UserGroupIcon,
@@ -150,7 +157,7 @@ export function ProfileSidebar({ userId, isMobileMenuOpen, onMobileMenuClose }: 
       <>
         {/* Desktop sidebar placeholder */}
         <div
-          className="hidden md:block fixed left-0 top-0 h-screen bg-gray-900 border-r border-gray-800 transition-all duration-300"
+          className="hidden md:block fixed left-0 top-0 h-screen bg-black border-r border-gray-800 transition-all duration-300"
           style={{ width: '240px' }}
         />
       </>
@@ -170,7 +177,7 @@ export function ProfileSidebar({ userId, isMobileMenuOpen, onMobileMenuClose }: 
       {/* Sidebar */}
       <div
         className={`
-          fixed left-0 top-0 h-screen bg-gray-900 border-r border-gray-800 transition-all duration-200 flex flex-col z-50
+          fixed left-0 top-0 h-screen bg-black border-r border-gray-800 transition-all duration-200 flex flex-col z-50
           ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
         `}
         style={{ width: `${sidebarWidth}px` }}
