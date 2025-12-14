@@ -185,7 +185,7 @@ export function ProfileSidebar({ userId, isMobileMenuOpen, onMobileMenuClose }: 
         onMouseLeave={() => sidebarMode === 'hover' && setIsHovering(false)}
       >
       {/* Logo/Brand */}
-      <div className="h-16 flex items-center justify-center border-b border-gray-800">
+      <div className="py-3 flex items-center justify-center border-b border-gray-800">
         <Link href="/" className="text-white font-light text-lg">
           {isVisuallyCollapsed ? 'S' : 'Signal'}
         </Link>
