@@ -56,7 +56,16 @@ export function ProfileTabs({ userId }: ProfileTabsProps) {
       fetchUnreadCount()
     }, 10000)
 
-    return () => clearInterval(interval)
+    // Listen for messagesRead event to refresh immediately
+    const handleMessagesRead = () => {
+      fetchUnreadCount()
+    }
+    window.addEventListener('messagesRead', handleMessagesRead)
+
+    return () => {
+      clearInterval(interval)
+      window.removeEventListener('messagesRead', handleMessagesRead)
+    }
   }, [userId])
 
   const tabs = [

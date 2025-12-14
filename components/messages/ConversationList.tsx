@@ -25,12 +25,14 @@ interface ConversationListProps {
   currentUserId: string
   selectedConnectionId: string | null
   onSelectConversation: (connectionId: string) => void
+  refreshTrigger?: number
 }
 
 export function ConversationList({
   currentUserId,
   selectedConnectionId,
   onSelectConversation,
+  refreshTrigger,
 }: ConversationListProps) {
   const [conversations, setConversations] = useState<Conversation[]>([])
   const [loading, setLoading] = useState(true)
@@ -42,6 +44,13 @@ export function ConversationList({
     const interval = setInterval(fetchConversations, 10000)
     return () => clearInterval(interval)
   }, [])
+
+  // Refresh when refreshTrigger changes
+  useEffect(() => {
+    if (refreshTrigger !== undefined) {
+      fetchConversations()
+    }
+  }, [refreshTrigger])
 
   async function fetchConversations() {
     try {

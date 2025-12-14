@@ -26,6 +26,7 @@ export function MessagingHub({ userId }: MessagingHubProps) {
   const [selectedConnectionId, setSelectedConnectionId] = useState<string | null>(null)
   const [selectedConversation, setSelectedConversation] = useState<Conversation | null>(null)
   const [isMobile, setIsMobile] = useState(false)
+  const [refreshTrigger, setRefreshTrigger] = useState(0)
 
   // Detect mobile viewport
   useEffect(() => {
@@ -70,6 +71,11 @@ export function MessagingHub({ userId }: MessagingHubProps) {
     setSelectedConversation(null)
   }
 
+  const handleMessagesRead = () => {
+    // Trigger conversation list refresh
+    setRefreshTrigger((prev) => prev + 1)
+  }
+
   // Mobile view: Show either list or thread
   if (isMobile) {
     if (selectedConnectionId && selectedConversation) {
@@ -102,6 +108,7 @@ export function MessagingHub({ userId }: MessagingHubProps) {
               connectionId={selectedConnectionId}
               currentUserId={userId}
               otherUser={selectedConversation.other_user}
+              onMessagesRead={handleMessagesRead}
             />
           </div>
         </div>
@@ -114,6 +121,7 @@ export function MessagingHub({ userId }: MessagingHubProps) {
           currentUserId={userId}
           selectedConnectionId={selectedConnectionId}
           onSelectConversation={handleSelectConversation}
+          refreshTrigger={refreshTrigger}
         />
       </div>
     )
@@ -128,6 +136,7 @@ export function MessagingHub({ userId }: MessagingHubProps) {
           currentUserId={userId}
           selectedConnectionId={selectedConnectionId}
           onSelectConversation={handleSelectConversation}
+          refreshTrigger={refreshTrigger}
         />
       </div>
 
@@ -138,6 +147,7 @@ export function MessagingHub({ userId }: MessagingHubProps) {
             connectionId={selectedConnectionId}
             currentUserId={userId}
             otherUser={selectedConversation.other_user}
+            onMessagesRead={handleMessagesRead}
           />
         ) : (
           <div className="h-full flex flex-col items-center justify-center bg-white text-center p-8">

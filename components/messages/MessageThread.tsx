@@ -28,6 +28,7 @@ interface MessageThreadProps {
     avatar_url?: string | null
   }
   onRemoveConnection?: () => void
+  onMessagesRead?: () => void
 }
 
 const MAX_MESSAGE_LENGTH = 2000
@@ -37,6 +38,7 @@ export function MessageThread({
   currentUserId,
   otherUser,
   onRemoveConnection,
+  onMessagesRead,
 }: MessageThreadProps) {
   const [messages, setMessages] = useState<Message[]>([])
   const [newMessage, setNewMessage] = useState('')
@@ -88,6 +90,12 @@ export function MessageThread({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ connection_id: connectionId }),
       })
+      // Notify parent that messages were marked as read
+      if (onMessagesRead) {
+        onMessagesRead()
+      }
+      // Dispatch custom event for other components (like ProfileTabs) to listen to
+      window.dispatchEvent(new CustomEvent('messagesRead'))
     } catch (error) {
       console.error('Error marking messages as read:', error)
     }
