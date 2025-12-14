@@ -1,13 +1,13 @@
 -- Migration: Seed sample profiles for testing
 -- Creates 30 profiles: 10 IT/ML/AI, 10 Consulting, 10 Hospitality
-
+)
 -- Enable required extensions
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
-
+)
 -- Clean up existing test profiles if they exist (idempotent migration)
 -- This allows the migration to be run multiple times safely
 -- Delete in correct order: user_signals -> auth.users (which cascades to profiles)
-
+)
 DO $$
 DECLARE
   test_uuids UUID[] := ARRAY[
@@ -45,21 +45,21 @@ DECLARE
 BEGIN
   -- Delete user_signals first
   DELETE FROM user_signals WHERE user_id = ANY(test_uuids);
-
+)
   -- Delete profiles (if not already deleted by cascade)
   DELETE FROM profiles WHERE id = ANY(test_uuids);
-
+)
   -- Delete auth users (will cascade to profiles if still exists)
   DELETE FROM auth.users WHERE id = ANY(test_uuids);
 END $$;
-
+)
 -- Insert auth users and profiles
 -- Note: In production, use Supabase Auth API. This is for testing only.
-
+)
 -- ============================================
 -- IT/ML/AI INDUSTRY PROFILES (10)
 -- ============================================
-
+)
 -- 1. Sarah Chen - ML Engineer
 INSERT INTO auth.users (id, email, encrypted_password, email_confirmed_at, created_at, updated_at, raw_app_meta_data, raw_user_meta_data, role, aud)
 VALUES (
@@ -74,9 +74,8 @@ VALUES (
   'authenticated',
   'authenticated'
 );
-
+)
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
-ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '11111111-1111-1111-1111-111111111111',
   'sarah.chen@neuraltechai.com',
@@ -86,15 +85,15 @@ VALUES (
   'San Francisco, CA',
   'https://sarahchen.dev',
   'https://i.pravatar.cc/150?u=sarah.chen@neuraltechai.com'
-);
-
+)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
   ('11111111-1111-1111-1111-111111111111', 'learning-ai', NOW(), NOW() + INTERVAL '90 days'),
   ('11111111-1111-1111-1111-111111111111', 'contribution-mentoring', NOW(), NOW() + INTERVAL '90 days'),
   ('11111111-1111-1111-1111-111111111111', 'perspective-builder', NOW(), NULL),
   ('11111111-1111-1111-1111-111111111111', 'perspective-systems', NOW(), NULL);
-
+)
 -- 2. Marcus Johnson - Data Scientist
 INSERT INTO auth.users (id, email, encrypted_password, email_confirmed_at, created_at, updated_at, raw_app_meta_data, raw_user_meta_data, role, aud)
 VALUES (
@@ -109,9 +108,8 @@ VALUES (
   'authenticated',
   'authenticated'
 );
-
+)
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
-ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '11111111-1111-1111-1111-111111111112',
   'marcus.j@dataverse.io',
@@ -121,15 +119,15 @@ VALUES (
   'New York, NY',
   NULL,
   'https://i.pravatar.cc/150?u=marcus.j@dataverse.io'
-);
-
+)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
   ('11111111-1111-1111-1111-111111111112', 'learning-data', NOW(), NOW() + INTERVAL '90 days'),
   ('11111111-1111-1111-1111-111111111112', 'learning-ai', NOW(), NOW() + INTERVAL '90 days'),
   ('11111111-1111-1111-1111-111111111112', 'availability-contract', NOW(), NOW() + INTERVAL '30 days'),
   ('11111111-1111-1111-1111-111111111112', 'contribution-speaking', NOW(), NOW() + INTERVAL '90 days');
-
+)
 -- 3. Priya Patel - AI Researcher
 INSERT INTO auth.users (id, email, encrypted_password, email_confirmed_at, created_at, updated_at, raw_app_meta_data, raw_user_meta_data, role, aud)
 VALUES (
@@ -144,9 +142,8 @@ VALUES (
   'authenticated',
   'authenticated'
 );
-
+)
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
-ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '11111111-1111-1111-1111-111111111113',
   'priya.patel@openai-research.org',
@@ -156,14 +153,14 @@ VALUES (
   'Seattle, WA',
   'https://priyapatel.ai',
   'https://i.pravatar.cc/150?u=priya.patel@openai-research.org'
-);
-
+)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
   ('11111111-1111-1111-1111-111111111113', 'learning-ai', NOW(), NOW() + INTERVAL '90 days'),
   ('11111111-1111-1111-1111-111111111113', 'contribution-speaking', NOW(), NOW() + INTERVAL '90 days'),
   ('11111111-1111-1111-1111-111111111113', 'perspective-researchfirst', NOW(), NULL);
-
+)
 -- 4. Alex Rivera - Platform Engineer
 INSERT INTO auth.users (id, email, encrypted_password, email_confirmed_at, created_at, updated_at, raw_app_meta_data, raw_user_meta_data, role, aud)
 VALUES (
@@ -178,9 +175,8 @@ VALUES (
   'authenticated',
   'authenticated'
 );
-
+)
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
-ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '11111111-1111-1111-1111-111111111114',
   'alex.rivera@cloudscale.tech',
@@ -190,15 +186,15 @@ VALUES (
   'Austin, TX',
   'https://alexrivera.io',
   'https://i.pravatar.cc/150?u=alex.rivera@cloudscale.tech'
-);
-
+)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
   ('11111111-1111-1111-1111-111111111114', 'learning-devtools', NOW(), NOW() + INTERVAL '90 days'),
   ('11111111-1111-1111-1111-111111111114', 'perspective-systems', NOW(), NULL),
   ('11111111-1111-1111-1111-111111111114', 'perspective-enterprise', NOW(), NULL),
   ('11111111-1111-1111-1111-111111111114', 'contribution-reviewing', NOW(), NOW() + INTERVAL '90 days');
-
+)
 -- 5. Emily Zhang - ML Product Manager
 INSERT INTO auth.users (id, email, encrypted_password, email_confirmed_at, created_at, updated_at, raw_app_meta_data, raw_user_meta_data, role, aud)
 VALUES (
@@ -213,9 +209,8 @@ VALUES (
   'authenticated',
   'authenticated'
 );
-
+)
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
-ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '11111111-1111-1111-1111-111111111115',
   'emily.zhang@mlproducts.ai',
@@ -225,15 +220,15 @@ VALUES (
   'Los Angeles, CA',
   NULL,
   'https://i.pravatar.cc/150?u=emily.zhang@mlproducts.ai'
-);
-
+)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
   ('11111111-1111-1111-1111-111111111115', 'learning-product', NOW(), NOW() + INTERVAL '90 days'),
   ('11111111-1111-1111-1111-111111111115', 'learning-ai', NOW(), NOW() + INTERVAL '90 days'),
   ('11111111-1111-1111-1111-111111111115', 'perspective-productled', NOW(), NULL),
   ('11111111-1111-1111-1111-111111111115', 'availability-exploring', NOW(), NOW() + INTERVAL '30 days');
-
+)
 -- 6. James Kim - Security Engineer
 INSERT INTO auth.users (id, email, encrypted_password, email_confirmed_at, created_at, updated_at, raw_app_meta_data, raw_user_meta_data, role, aud)
 VALUES (
@@ -248,9 +243,8 @@ VALUES (
   'authenticated',
   'authenticated'
 );
-
+)
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
-ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '11111111-1111-1111-1111-111111111116',
   'james.kim@securetech.io',
@@ -260,14 +254,14 @@ VALUES (
   'Boston, MA',
   'https://jameskim.security',
   'https://i.pravatar.cc/150?u=james.kim@securetech.io'
-);
-
+)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
   ('11111111-1111-1111-1111-111111111116', 'learning-security', NOW(), NOW() + INTERVAL '90 days'),
   ('11111111-1111-1111-1111-111111111116', 'contribution-advising', NOW(), NOW() + INTERVAL '90 days'),
   ('11111111-1111-1111-1111-111111111116', 'perspective-builder', NOW(), NULL);
-
+)
 -- 7. Olivia Martinez - DevOps Lead
 INSERT INTO auth.users (id, email, encrypted_password, email_confirmed_at, created_at, updated_at, raw_app_meta_data, raw_user_meta_data, role, aud)
 VALUES (
@@ -282,9 +276,8 @@ VALUES (
   'authenticated',
   'authenticated'
 );
-
+)
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
-ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '11111111-1111-1111-1111-111111111117',
   'olivia.m@devopscloud.com',
@@ -294,15 +287,15 @@ VALUES (
   'Denver, CO',
   NULL,
   'https://i.pravatar.cc/150?u=olivia.m@devopscloud.com'
-);
-
+)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
   ('11111111-1111-1111-1111-111111111117', 'learning-devtools', NOW(), NOW() + INTERVAL '90 days'),
   ('11111111-1111-1111-1111-111111111117', 'contribution-mentoring', NOW(), NOW() + INTERVAL '90 days'),
   ('11111111-1111-1111-1111-111111111117', 'perspective-systems', NOW(), NULL),
   ('11111111-1111-1111-1111-111111111117', 'availability-hiring', NOW(), NOW() + INTERVAL '30 days');
-
+)
 -- 8. David Lee - Full Stack Developer
 INSERT INTO auth.users (id, email, encrypted_password, email_confirmed_at, created_at, updated_at, raw_app_meta_data, raw_user_meta_data, role, aud)
 VALUES (
@@ -317,9 +310,8 @@ VALUES (
   'authenticated',
   'authenticated'
 );
-
+)
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
-ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '11111111-1111-1111-1111-111111111118',
   'david.lee@webstartup.tech',
@@ -329,14 +321,14 @@ VALUES (
   'Portland, OR',
   'https://davidlee.dev',
   'https://i.pravatar.cc/150?u=david.lee@webstartup.tech'
-);
-
+)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
   ('11111111-1111-1111-1111-111111111118', 'learning-devtools', NOW(), NOW() + INTERVAL '90 days'),
   ('11111111-1111-1111-1111-111111111118', 'perspective-builder', NOW(), NULL),
   ('11111111-1111-1111-1111-111111111118', 'availability-cofounder', NOW(), NOW() + INTERVAL '30 days');
-
+)
 -- 9. Rachel Brown - AI Ethics Researcher
 INSERT INTO auth.users (id, email, encrypted_password, email_confirmed_at, created_at, updated_at, raw_app_meta_data, raw_user_meta_data, role, aud)
 VALUES (
@@ -351,9 +343,8 @@ VALUES (
   'authenticated',
   'authenticated'
 );
-
+)
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
-ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '11111111-1111-1111-1111-111111111119',
   'rachel.brown@aiethics.org',
@@ -363,15 +354,15 @@ VALUES (
   'Washington, DC',
   'https://rachelbrown.org',
   'https://i.pravatar.cc/150?u=rachel.brown@aiethics.org'
-);
-
+)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
   ('11111111-1111-1111-1111-111111111119', 'learning-ai', NOW(), NOW() + INTERVAL '90 days'),
   ('11111111-1111-1111-1111-111111111119', 'contribution-speaking', NOW(), NOW() + INTERVAL '90 days'),
   ('11111111-1111-1111-1111-111111111119', 'contribution-advising', NOW(), NOW() + INTERVAL '90 days'),
   ('11111111-1111-1111-1111-111111111119', 'perspective-researchfirst', NOW(), NULL);
-
+)
 -- 10. Tom Wilson - Tech Lead
 INSERT INTO auth.users (id, email, encrypted_password, email_confirmed_at, created_at, updated_at, raw_app_meta_data, raw_user_meta_data, role, aud)
 VALUES (
@@ -386,9 +377,8 @@ VALUES (
   'authenticated',
   'authenticated'
 );
-
+)
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
-ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '11111111-1111-1111-1111-111111111120',
   'tom.wilson@techcorp.com',
@@ -398,19 +388,19 @@ VALUES (
   'Chicago, IL',
   NULL,
   'https://i.pravatar.cc/150?u=tom.wilson@techcorp.com'
-);
-
+)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
   ('11111111-1111-1111-1111-111111111120', 'perspective-systems', NOW(), NULL),
   ('11111111-1111-1111-1111-111111111120', 'perspective-enterprise', NOW(), NULL),
   ('11111111-1111-1111-1111-111111111120', 'contribution-mentoring', NOW(), NOW() + INTERVAL '90 days'),
   ('11111111-1111-1111-1111-111111111120', 'availability-exploring', NOW(), NOW() + INTERVAL '30 days');
-
+)
 -- ============================================
 -- CONSULTING INDUSTRY PROFILES (10)
 -- ============================================
-
+)
 -- 11. Michael Chen - Strategy Consultant
 INSERT INTO auth.users (id, email, encrypted_password, email_confirmed_at, created_at, updated_at, raw_app_meta_data, raw_user_meta_data, role, aud)
 VALUES (
@@ -425,9 +415,8 @@ VALUES (
   'authenticated',
   'authenticated'
 );
-
+)
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
-ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '22222222-2222-2222-2222-222222222221',
   'michael.chen@strategyadvisors.com',
@@ -437,15 +426,15 @@ VALUES (
   'New York, NY',
   'https://michaelchen.consulting',
   'https://i.pravatar.cc/150?u=michael.chen@strategyadvisors.com'
-);
-
+)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
   ('22222222-2222-2222-2222-222222222221', 'contribution-advising', NOW(), NOW() + INTERVAL '90 days'),
   ('22222222-2222-2222-2222-222222222221', 'availability-contract', NOW(), NOW() + INTERVAL '30 days'),
   ('22222222-2222-2222-2222-222222222221', 'perspective-enterprise', NOW(), NULL),
   ('22222222-2222-2222-2222-222222222221', 'learning-product', NOW(), NOW() + INTERVAL '90 days');
-
+)
 -- 12. Jennifer Lopez - Management Consultant
 INSERT INTO auth.users (id, email, encrypted_password, email_confirmed_at, created_at, updated_at, raw_app_meta_data, raw_user_meta_data, role, aud)
 VALUES (
@@ -460,9 +449,8 @@ VALUES (
   'authenticated',
   'authenticated'
 );
-
+)
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
-ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '22222222-2222-2222-2222-222222222222',
   'jennifer.lopez@bainpartners.com',
@@ -472,15 +460,15 @@ VALUES (
   'Boston, MA',
   NULL,
   'https://i.pravatar.cc/150?u=jennifer.lopez@bainpartners.com'
-);
-
+)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
   ('22222222-2222-2222-2222-222222222222', 'learning-healthcare', NOW(), NOW() + INTERVAL '90 days'),
   ('22222222-2222-2222-2222-222222222222', 'contribution-advising', NOW(), NOW() + INTERVAL '90 days'),
   ('22222222-2222-2222-2222-222222222222', 'contribution-mentoring', NOW(), NOW() + INTERVAL '90 days'),
   ('22222222-2222-2222-2222-222222222222', 'perspective-adaptable', NOW(), NULL);
-
+)
 -- 13. Robert Anderson - Business Advisor
 INSERT INTO auth.users (id, email, encrypted_password, email_confirmed_at, created_at, updated_at, raw_app_meta_data, raw_user_meta_data, role, aud)
 VALUES (
@@ -495,9 +483,8 @@ VALUES (
   'authenticated',
   'authenticated'
 );
-
+)
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
-ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '22222222-2222-2222-2222-222222222223',
   'robert.anderson@advisorygroup.co',
@@ -507,14 +494,14 @@ VALUES (
   'San Francisco, CA',
   'https://robertanderson.co',
   'https://i.pravatar.cc/150?u=robert.anderson@advisorygroup.co'
-);
-
+)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
   ('22222222-2222-2222-2222-222222222223', 'contribution-advising', NOW(), NOW() + INTERVAL '90 days'),
   ('22222222-2222-2222-2222-222222222223', 'perspective-earlystage', NOW(), NULL),
   ('22222222-2222-2222-2222-222222222223', 'availability-contract', NOW(), NOW() + INTERVAL '30 days');
-
+)
 -- 14. Lisa Wang - Change Management
 INSERT INTO auth.users (id, email, encrypted_password, email_confirmed_at, created_at, updated_at, raw_app_meta_data, raw_user_meta_data, role, aud)
 VALUES (
@@ -529,9 +516,8 @@ VALUES (
   'authenticated',
   'authenticated'
 );
-
+)
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
-ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '22222222-2222-2222-2222-222222222224',
   'lisa.wang@changeexperts.com',
@@ -541,15 +527,15 @@ VALUES (
   'Atlanta, GA',
   NULL,
   'https://i.pravatar.cc/150?u=lisa.wang@changeexperts.com'
-);
-
+)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
   ('22222222-2222-2222-2222-222222222224', 'contribution-mentoring', NOW(), NOW() + INTERVAL '90 days'),
   ('22222222-2222-2222-2222-222222222224', 'contribution-speaking', NOW(), NOW() + INTERVAL '90 days'),
   ('22222222-2222-2222-2222-222222222224', 'perspective-enterprise', NOW(), NULL),
   ('22222222-2222-2222-2222-222222222224', 'perspective-adaptable', NOW(), NULL);
-
+)
 -- 15. Kevin O'Brien - Operations Consultant
 INSERT INTO auth.users (id, email, encrypted_password, email_confirmed_at, created_at, updated_at, raw_app_meta_data, raw_user_meta_data, role, aud)
 VALUES (
@@ -564,9 +550,8 @@ VALUES (
   'authenticated',
   'authenticated'
 );
-
+)
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
-ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '22222222-2222-2222-2222-222222222225',
   'kevin.obrien@opsconsulting.io',
@@ -576,14 +561,14 @@ VALUES (
   'Dallas, TX',
   'https://kevinobrien.consulting',
   'https://i.pravatar.cc/150?u=kevin.obrien@opsconsulting.io'
-);
-
+)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
   ('22222222-2222-2222-2222-222222222225', 'contribution-advising', NOW(), NOW() + INTERVAL '90 days'),
   ('22222222-2222-2222-2222-222222222225', 'perspective-systems', NOW(), NULL),
   ('22222222-2222-2222-2222-222222222225', 'learning-data', NOW(), NOW() + INTERVAL '90 days');
-
+)
 -- 16. Amanda Taylor - HR Consultant
 INSERT INTO auth.users (id, email, encrypted_password, email_confirmed_at, created_at, updated_at, raw_app_meta_data, raw_user_meta_data, role, aud)
 VALUES (
@@ -598,9 +583,8 @@ VALUES (
   'authenticated',
   'authenticated'
 );
-
+)
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
-ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '22222222-2222-2222-2222-222222222226',
   'amanda.taylor@talentconsulting.com',
@@ -610,14 +594,14 @@ VALUES (
   'Miami, FL',
   NULL,
   'https://i.pravatar.cc/150?u=amanda.taylor@talentconsulting.com'
-);
-
+)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
   ('22222222-2222-2222-2222-222222222226', 'contribution-mentoring', NOW(), NOW() + INTERVAL '90 days'),
   ('22222222-2222-2222-2222-222222222226', 'contribution-advising', NOW(), NOW() + INTERVAL '90 days'),
   ('22222222-2222-2222-2222-222222222226', 'availability-contract', NOW(), NOW() + INTERVAL '30 days');
-
+)
 -- 17. Daniel Kim - Financial Advisor
 INSERT INTO auth.users (id, email, encrypted_password, email_confirmed_at, created_at, updated_at, raw_app_meta_data, raw_user_meta_data, role, aud)
 VALUES (
@@ -632,9 +616,8 @@ VALUES (
   'authenticated',
   'authenticated'
 );
-
+)
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
-ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '22222222-2222-2222-2222-222222222227',
   'daniel.kim@financeadvisors.co',
@@ -644,15 +627,15 @@ VALUES (
   'Seattle, WA',
   'https://danielkim.finance',
   'https://i.pravatar.cc/150?u=daniel.kim@financeadvisors.co'
-);
-
+)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
   ('22222222-2222-2222-2222-222222222227', 'contribution-advising', NOW(), NOW() + INTERVAL '90 days'),
   ('22222222-2222-2222-2222-222222222227', 'perspective-earlystage', NOW(), NULL),
   ('22222222-2222-2222-2222-222222222227', 'perspective-adaptable', NOW(), NULL),
   ('22222222-2222-2222-2222-222222222227', 'availability-contract', NOW(), NOW() + INTERVAL '30 days');
-
+)
 -- 18. Sophie Martin - Sustainability Consultant
 INSERT INTO auth.users (id, email, encrypted_password, email_confirmed_at, created_at, updated_at, raw_app_meta_data, raw_user_meta_data, role, aud)
 VALUES (
@@ -667,9 +650,8 @@ VALUES (
   'authenticated',
   'authenticated'
 );
-
+)
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
-ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '22222222-2222-2222-2222-222222222228',
   'sophie.martin@greenconsulting.org',
@@ -679,15 +661,15 @@ VALUES (
   'San Diego, CA',
   'https://sophiemartin.eco',
   'https://i.pravatar.cc/150?u=sophie.martin@greenconsulting.org'
-);
-
+)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
   ('22222222-2222-2222-2222-222222222228', 'learning-climate', NOW(), NOW() + INTERVAL '90 days'),
   ('22222222-2222-2222-2222-222222222228', 'contribution-advising', NOW(), NOW() + INTERVAL '90 days'),
   ('22222222-2222-2222-2222-222222222228', 'contribution-speaking', NOW(), NOW() + INTERVAL '90 days'),
   ('22222222-2222-2222-2222-222222222228', 'perspective-researchfirst', NOW(), NULL);
-
+)
 -- 19. Chris Thompson - Tech Consultant
 INSERT INTO auth.users (id, email, encrypted_password, email_confirmed_at, created_at, updated_at, raw_app_meta_data, raw_user_meta_data, role, aud)
 VALUES (
@@ -702,9 +684,8 @@ VALUES (
   'authenticated',
   'authenticated'
 );
-
+)
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
-ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '22222222-2222-2222-2222-222222222229',
   'chris.thompson@techconsultants.io',
@@ -714,14 +695,14 @@ VALUES (
   'Phoenix, AZ',
   NULL,
   'https://i.pravatar.cc/150?u=chris.thompson@techconsultants.io'
-);
-
+)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
   ('22222222-2222-2222-2222-222222222229', 'learning-devtools', NOW(), NOW() + INTERVAL '90 days'),
   ('22222222-2222-2222-2222-222222222229', 'contribution-advising', NOW(), NOW() + INTERVAL '90 days'),
   ('22222222-2222-2222-2222-222222222229', 'perspective-enterprise', NOW(), NULL);
-
+)
 -- 20. Maria Rodriguez - Product Consultant
 INSERT INTO auth.users (id, email, encrypted_password, email_confirmed_at, created_at, updated_at, raw_app_meta_data, raw_user_meta_data, role, aud)
 VALUES (
@@ -736,9 +717,8 @@ VALUES (
   'authenticated',
   'authenticated'
 );
-
+)
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
-ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '22222222-2222-2222-2222-222222222230',
   'maria.rodriguez@productexperts.com',
@@ -748,19 +728,19 @@ VALUES (
   'Austin, TX',
   'https://mariarodriguez.pm',
   'https://i.pravatar.cc/150?u=maria.rodriguez@productexperts.com'
-);
-
+)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
   ('22222222-2222-2222-2222-222222222230', 'learning-product', NOW(), NOW() + INTERVAL '90 days'),
   ('22222222-2222-2222-2222-222222222230', 'contribution-advising', NOW(), NOW() + INTERVAL '90 days'),
   ('22222222-2222-2222-2222-222222222230', 'contribution-mentoring', NOW(), NOW() + INTERVAL '90 days'),
   ('22222222-2222-2222-2222-222222222230', 'perspective-productled', NOW(), NULL);
-
+)
 -- ============================================
 -- HOSPITALITY INDUSTRY PROFILES (10)
 -- ============================================
-
+)
 -- 21. Brian Foster - Hotel Manager
 INSERT INTO auth.users (id, email, encrypted_password, email_confirmed_at, created_at, updated_at, raw_app_meta_data, raw_user_meta_data, role, aud)
 VALUES (
@@ -775,9 +755,8 @@ VALUES (
   'authenticated',
   'authenticated'
 );
-
+)
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
-ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '33333333-3333-3333-3333-333333333331',
   'brian.foster@grandhotelgroup.com',
@@ -787,14 +766,14 @@ VALUES (
   'Chicago, IL',
   NULL,
   'https://i.pravatar.cc/150?u=brian.foster@grandhotelgroup.com'
-);
-
+)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
   ('33333333-3333-3333-3333-333333333331', 'contribution-mentoring', NOW(), NOW() + INTERVAL '90 days'),
   ('33333333-3333-3333-3333-333333333331', 'perspective-enterprise', NOW(), NULL),
   ('33333333-3333-3333-3333-333333333331', 'availability-hiring', NOW(), NOW() + INTERVAL '30 days');
-
+)
 -- 22. Jessica Miller - Restaurant Manager
 INSERT INTO auth.users (id, email, encrypted_password, email_confirmed_at, created_at, updated_at, raw_app_meta_data, raw_user_meta_data, role, aud)
 VALUES (
@@ -809,9 +788,8 @@ VALUES (
   'authenticated',
   'authenticated'
 );
-
+)
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
-ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '33333333-3333-3333-3333-333333333332',
   'jessica.miller@finediningco.com',
@@ -821,14 +799,14 @@ VALUES (
   'New York, NY',
   NULL,
   'https://i.pravatar.cc/150?u=jessica.miller@finediningco.com'
-);
-
+)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
   ('33333333-3333-3333-3333-333333333332', 'contribution-mentoring', NOW(), NOW() + INTERVAL '90 days'),
   ('33333333-3333-3333-3333-333333333332', 'perspective-productled', NOW(), NULL),
   ('33333333-3333-3333-3333-333333333332', 'availability-fulltime', NOW(), NOW() + INTERVAL '30 days');
-
+)
 -- 23. Anthony Garcia - Hospitality Director
 INSERT INTO auth.users (id, email, encrypted_password, email_confirmed_at, created_at, updated_at, raw_app_meta_data, raw_user_meta_data, role, aud)
 VALUES (
@@ -843,9 +821,8 @@ VALUES (
   'authenticated',
   'authenticated'
 );
-
+)
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
-ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '33333333-3333-3333-3333-333333333333',
   'anthony.garcia@resortgroup.com',
@@ -855,14 +832,14 @@ VALUES (
   'Miami, FL',
   'https://anthonygarcia.hospitality',
   'https://i.pravatar.cc/150?u=anthony.garcia@resortgroup.com'
-);
-
+)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
   ('33333333-3333-3333-3333-333333333333', 'perspective-enterprise', NOW(), NULL),
   ('33333333-3333-3333-3333-333333333333', 'contribution-sharing', NOW(), NOW() + INTERVAL '90 days'),
   ('33333333-3333-3333-3333-333333333333', 'availability-exploring', NOW(), NOW() + INTERVAL '30 days');
-
+)
 -- 24. Nicole White - Event Coordinator
 INSERT INTO auth.users (id, email, encrypted_password, email_confirmed_at, created_at, updated_at, raw_app_meta_data, raw_user_meta_data, role, aud)
 VALUES (
@@ -877,9 +854,8 @@ VALUES (
   'authenticated',
   'authenticated'
 );
-
+)
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
-ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '33333333-3333-3333-3333-333333333334',
   'nicole.white@eventspro.com',
@@ -889,14 +865,14 @@ VALUES (
   'Las Vegas, NV',
   NULL,
   'https://i.pravatar.cc/150?u=nicole.white@eventspro.com'
-);
-
+)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
   ('33333333-3333-3333-3333-333333333334', 'perspective-productled', NOW(), NULL),
   ('33333333-3333-3333-3333-333333333334', 'contribution-sharing', NOW(), NOW() + INTERVAL '90 days'),
   ('33333333-3333-3333-3333-333333333334', 'availability-contract', NOW(), NOW() + INTERVAL '30 days');
-
+)
 -- 25. Carlos Sanchez - Chef & Culinary Director
 INSERT INTO auth.users (id, email, encrypted_password, email_confirmed_at, created_at, updated_at, raw_app_meta_data, raw_user_meta_data, role, aud)
 VALUES (
@@ -911,9 +887,8 @@ VALUES (
   'authenticated',
   'authenticated'
 );
-
+)
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
-ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '33333333-3333-3333-3333-333333333335',
   'carlos.sanchez@culinaryventures.com',
@@ -923,14 +898,14 @@ VALUES (
   'Los Angeles, CA',
   'https://carlossanchez.chef',
   'https://i.pravatar.cc/150?u=carlos.sanchez@culinaryventures.com'
-);
-
+)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
   ('33333333-3333-3333-3333-333333333335', 'contribution-mentoring', NOW(), NOW() + INTERVAL '90 days'),
   ('33333333-3333-3333-3333-333333333335', 'perspective-builder', NOW(), NULL),
   ('33333333-3333-3333-3333-333333333335', 'availability-cofounder', NOW(), NOW() + INTERVAL '30 days');
-
+)
 -- 26. Sarah Johnson - F&B Manager
 INSERT INTO auth.users (id, email, encrypted_password, email_confirmed_at, created_at, updated_at, raw_app_meta_data, raw_user_meta_data, role, aud)
 VALUES (
@@ -945,9 +920,8 @@ VALUES (
   'authenticated',
   'authenticated'
 );
-
+)
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
-ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '33333333-3333-3333-3333-333333333336',
   'sarah.johnson@hotelchain.com',
@@ -957,14 +931,14 @@ VALUES (
   'Orlando, FL',
   NULL,
   'https://i.pravatar.cc/150?u=sarah.johnson@hotelchain.com'
-);
-
+)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
   ('33333333-3333-3333-3333-333333333336', 'perspective-enterprise', NOW(), NULL),
   ('33333333-3333-3333-3333-333333333336', 'contribution-sharing', NOW(), NOW() + INTERVAL '90 days'),
   ('33333333-3333-3333-3333-333333333336', 'availability-fulltime', NOW(), NOW() + INTERVAL '30 days');
-
+)
 -- 27. Mark Davis - Tourism Manager
 INSERT INTO auth.users (id, email, encrypted_password, email_confirmed_at, created_at, updated_at, raw_app_meta_data, raw_user_meta_data, role, aud)
 VALUES (
@@ -979,9 +953,8 @@ VALUES (
   'authenticated',
   'authenticated'
 );
-
+)
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
-ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '33333333-3333-3333-3333-333333333337',
   'mark.davis@tourismboard.org',
@@ -991,14 +964,14 @@ VALUES (
   'San Antonio, TX',
   'https://markdavis.tourism',
   'https://i.pravatar.cc/150?u=mark.davis@tourismboard.org'
-);
-
+)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
   ('33333333-3333-3333-3333-333333333337', 'contribution-sharing', NOW(), NOW() + INTERVAL '90 days'),
   ('33333333-3333-3333-3333-333333333337', 'perspective-adaptable', NOW(), NULL),
   ('33333333-3333-3333-3333-333333333337', 'availability-exploring', NOW(), NOW() + INTERVAL '30 days');
-
+)
 -- 28. Rachel Green - Guest Services
 INSERT INTO auth.users (id, email, encrypted_password, email_confirmed_at, created_at, updated_at, raw_app_meta_data, raw_user_meta_data, role, aud)
 VALUES (
@@ -1013,9 +986,8 @@ VALUES (
   'authenticated',
   'authenticated'
 );
-
+)
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
-ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '33333333-3333-3333-3333-333333333338',
   'rachel.green@luxuryhotels.com',
@@ -1025,14 +997,14 @@ VALUES (
   'San Francisco, CA',
   NULL,
   'https://i.pravatar.cc/150?u=rachel.green@luxuryhotels.com'
-);
-
+)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
   ('33333333-3333-3333-3333-333333333338', 'contribution-mentoring', NOW(), NOW() + INTERVAL '90 days'),
   ('33333333-3333-3333-3333-333333333338', 'perspective-productled', NOW(), NULL),
   ('33333333-3333-3333-3333-333333333338', 'availability-hiring', NOW(), NOW() + INTERVAL '30 days');
-
+)
 -- 29. Patrick Lee - Catering Director
 INSERT INTO auth.users (id, email, encrypted_password, email_confirmed_at, created_at, updated_at, raw_app_meta_data, raw_user_meta_data, role, aud)
 VALUES (
@@ -1047,9 +1019,8 @@ VALUES (
   'authenticated',
   'authenticated'
 );
-
+)
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
-ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '33333333-3333-3333-3333-333333333339',
   'patrick.lee@premiumcatering.com',
@@ -1059,14 +1030,14 @@ VALUES (
   'Washington, DC',
   'https://patricklee.catering',
   'https://i.pravatar.cc/150?u=patrick.lee@premiumcatering.com'
-);
-
+)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
   ('33333333-3333-3333-3333-333333333339', 'contribution-sharing', NOW(), NOW() + INTERVAL '90 days'),
   ('33333333-3333-3333-3333-333333333339', 'perspective-earlystage', NOW(), NULL),
   ('33333333-3333-3333-3333-333333333339', 'availability-contract', NOW(), NOW() + INTERVAL '30 days');
-
+)
 -- 30. Diana Martinez - Hotel Revenue Manager
 INSERT INTO auth.users (id, email, encrypted_password, email_confirmed_at, created_at, updated_at, raw_app_meta_data, raw_user_meta_data, role, aud)
 VALUES (
@@ -1081,9 +1052,8 @@ VALUES (
   'authenticated',
   'authenticated'
 );
-
+)
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
-ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '33333333-3333-3333-3333-333333333340',
   'diana.martinez@revenuehotels.com',
@@ -1093,14 +1063,14 @@ VALUES (
   'Nashville, TN',
   NULL,
   'https://i.pravatar.cc/150?u=diana.martinez@revenuehotels.com'
-);
-
+)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
   ('33333333-3333-3333-3333-333333333340', 'learning-data', NOW(), NOW() + INTERVAL '90 days'),
   ('33333333-3333-3333-3333-333333333340', 'perspective-systems', NOW(), NULL),
   ('33333333-3333-3333-3333-333333333340', 'contribution-mentoring', NOW(), NOW() + INTERVAL '90 days'),
   ('33333333-3333-3333-3333-333333333340', 'availability-fulltime', NOW(), NOW() + INTERVAL '30 days');
-
+)
 -- Add comment
 COMMENT ON MIGRATION IS 'Sample profiles for testing: 10 IT/ML/AI, 10 Consulting, 10 Hospitality professionals with realistic data and signals';
