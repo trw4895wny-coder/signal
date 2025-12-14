@@ -9,11 +9,11 @@ import {
   UserGroupIcon,
   ChatBubbleLeftRightIcon,
   ChartBarIcon,
-  ChevronDoubleLeftIcon,
-  ChevronDoubleRightIcon,
+  Cog6ToothIcon,
   Bars3Icon,
   XMarkIcon,
 } from '@heroicons/react/24/outline'
+import { SidebarSettings, type SidebarMode } from './SidebarSettings'
 
 interface ProfileSidebarProps {
   userId: string
@@ -23,27 +23,29 @@ interface ProfileSidebarProps {
 
 export function ProfileSidebar({ userId, isMobileMenuOpen, onMobileMenuClose }: ProfileSidebarProps) {
   const pathname = usePathname()
-  const [isCollapsed, setIsCollapsed] = useState(false)
+  const [sidebarMode, setSidebarMode] = useState<SidebarMode>('expanded')
+  const [isHovering, setIsHovering] = useState(false)
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false)
   const [pendingCount, setPendingCount] = useState(0)
   const [unreadMessagesCount, setUnreadMessagesCount] = useState(0)
   const [mounted, setMounted] = useState(false)
 
-  // Load collapse state from localStorage after mount
+  // Load sidebar mode from localStorage after mount
   useEffect(() => {
-    const saved = localStorage.getItem('sidebar-collapsed')
-    if (saved !== null) {
-      setIsCollapsed(saved === 'true')
+    const saved = localStorage.getItem('sidebar-mode') as SidebarMode
+    if (saved && ['expanded', 'collapsed', 'hover'].includes(saved)) {
+      setSidebarMode(saved)
     }
     setMounted(true)
   }, [])
 
-  // Save collapse state to localStorage
-  const toggleCollapse = () => {
-    const newState = !isCollapsed
-    setIsCollapsed(newState)
-    localStorage.setItem('sidebar-collapsed', String(newState))
+  // Handle mode change
+  const handleModeChange = (mode: SidebarMode) => {
+    setSidebarMode(mode)
+    localStorage.setItem('sidebar-mode', mode)
     // Dispatch custom event for layout to respond
     window.dispatchEvent(new Event('sidebar-toggle'))
+    setIsSettingsOpen(false)
   }
 
   useEffect(() => {
@@ -100,6 +102,14 @@ export function ProfileSidebar({ userId, isMobileMenuOpen, onMobileMenuClose }: 
       window.removeEventListener('messagesRead', handleMessagesRead)
     }
   }, [userId])
+
+  // Calculate if sidebar should be visually collapsed
+  const isVisuallyCollapsed =
+    sidebarMode === 'collapsed' ||
+    (sidebarMode === 'hover' && !isHovering)
+
+  // Calculate sidebar width
+  const sidebarWidth = isVisuallyCollapsed ? 64 : 240
 
   const menuItems = [
     {
@@ -160,15 +170,17 @@ export function ProfileSidebar({ userId, isMobileMenuOpen, onMobileMenuClose }: 
       {/* Sidebar */}
       <div
         className={`
-          fixed left-0 top-0 h-screen bg-gray-900 border-r border-gray-800 transition-all duration-300 flex flex-col z-50
+          fixed left-0 top-0 h-screen bg-gray-900 border-r border-gray-800 transition-all duration-200 flex flex-col z-50
           ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
         `}
-        style={{ width: isCollapsed ? '64px' : '240px' }}
+        style={{ width: `${sidebarWidth}px` }}
+        onMouseEnter={() => sidebarMode === 'hover' && setIsHovering(true)}
+        onMouseLeave={() => sidebarMode === 'hover' && setIsHovering(false)}
       >
       {/* Logo/Brand */}
       <div className="h-16 flex items-center justify-center border-b border-gray-800">
         <Link href="/" className="text-white font-light text-lg">
-          {isCollapsed ? 'S' : 'Signal'}
+          {isVisuallyCollapsed ? 'S' : 'Signal'}
         </Link>
       </div>
 
@@ -191,18 +203,18 @@ export function ProfileSidebar({ userId, isMobileMenuOpen, onMobileMenuClose }: 
                     : 'text-gray-400 hover:bg-gray-800 hover:text-gray-300'
                 }
               `}
-              title={isCollapsed ? item.name : undefined}
+              title={isVisuallyCollapsed ? item.name : undefined}
             >
               <div className="relative flex-shrink-0">
                 <Icon className="w-5 h-5" />
                 {/* Badge dot when collapsed */}
-                {isCollapsed && item.badge !== null && (
+                {isVisuallyCollapsed && item.badge !== null && (
                   <span className="absolute -top-1 -right-1 w-2 h-2 bg-blue-600 rounded-full" />
                 )}
               </div>
 
               {/* Text and badge when expanded */}
-              {!isCollapsed && (
+              {!isVisuallyCollapsed && (
                 <>
                   <span className="text-sm font-medium">{item.name}</span>
                   {item.badge !== null && (
@@ -214,7 +226,7 @@ export function ProfileSidebar({ userId, isMobileMenuOpen, onMobileMenuClose }: 
               )}
 
               {/* Tooltip when collapsed */}
-              {isCollapsed && (
+              {isVisuallyCollapsed && (
                 <div className="absolute left-full ml-2 px-2 py-1 bg-gray-800 text-white text-sm rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-50">
                   {item.name}
                   {item.badge !== null && (
@@ -229,24 +241,26 @@ export function ProfileSidebar({ userId, isMobileMenuOpen, onMobileMenuClose }: 
         })}
       </nav>
 
-      {/* Collapse Toggle Button */}
+      {/* Settings Button */}
       <div className="border-t border-gray-800 p-4">
         <button
-          onClick={toggleCollapse}
+          onClick={() => setIsSettingsOpen(true)}
           className="w-full flex items-center justify-center gap-2 px-3 py-2 text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition-colors"
-          title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          title="Sidebar settings"
         >
-          {isCollapsed ? (
-            <ChevronDoubleRightIcon className="w-5 h-5" />
-          ) : (
-            <>
-              <ChevronDoubleLeftIcon className="w-5 h-5" />
-              <span className="text-sm">Collapse</span>
-            </>
-          )}
+          <Cog6ToothIcon className="w-5 h-5" />
+          {!isVisuallyCollapsed && <span className="text-sm">Settings</span>}
         </button>
       </div>
     </div>
+
+    {/* Settings Modal */}
+    <SidebarSettings
+      isOpen={isSettingsOpen}
+      currentMode={sidebarMode}
+      onModeChange={handleModeChange}
+      onClose={() => setIsSettingsOpen(false)}
+    />
     </>
   )
 }
