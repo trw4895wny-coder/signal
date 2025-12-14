@@ -27,8 +27,8 @@ export async function PATCH(
   }
 
   // Update connection status (RLS ensures only receiver can update)
-  // @ts-ignore - connections table not in generated types yet
-  const { data: connection, error } = await supabase
+  // @ts-expect-error - connections table not in generated types yet
+  const { data: connection, error } = await (supabase as any)
     .from('connections')
     .update({ status })
     .eq('id', id)
