@@ -34,7 +34,7 @@ export function ProfileLayoutWrapper({ userId, signOutAction, children }: Profil
               >
                 <Bars3Icon className="w-6 h-6" />
               </button>
-              <div className="text-xl font-light text-gray-900">
+              <div className="text-2xl font-light text-gray-900">
                 Welcome back
               </div>
             </div>

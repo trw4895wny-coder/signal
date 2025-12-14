@@ -92,7 +92,7 @@ export function SidebarSettings({ isOpen, currentMode, onModeChange, onClose }: 
             <div className="text-xs font-medium">
               {mode.label}
             </div>
-            <div className="text-[10px] text-gray-500 mt-0.5">
+            <div className="text-xs text-gray-500 mt-0.5">
               {mode.description}
             </div>
           </button>

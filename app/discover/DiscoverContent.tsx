@@ -88,7 +88,7 @@ export default function DiscoverContent() {
   return (
     <>
       <div className="mb-6">
-          <h1 className="text-3xl font-light mb-2">Discover professionals</h1>
+          <h1 className="text-2xl font-light mb-2">Discover professionals</h1>
           <p className="text-gray-600">
             Find people by their signals, not keywords
           </p>

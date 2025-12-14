@@ -26,8 +26,8 @@ export default async function Home({
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
       <div className="text-center max-w-lg">
-        <h1 className="text-5xl font-light mb-4">Signal</h1>
-        <p className="text-gray-600 mb-8 text-lg">Professional signals, not noise</p>
+        <h1 className="text-3xl font-light mb-4">Signal</h1>
+        <p className="text-gray-600 mb-8">Professional signals, not noise</p>
 
         <div className="flex gap-4 justify-center">
           <Link

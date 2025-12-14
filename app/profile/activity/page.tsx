@@ -16,7 +16,7 @@ export default function ActivityPage() {
           />
         </svg>
       </div>
-      <h2 className="text-xl font-medium text-gray-900 mb-2">Activity Feed Coming Soon</h2>
+      <h2 className="text-2xl font-medium text-gray-900 mb-2">Activity Feed Coming Soon</h2>
       <p className="text-gray-600">
         Soon you&apos;ll be able to see your recent activity, signal changes, and connection updates here.
       </p>
