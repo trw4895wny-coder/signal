@@ -2,7 +2,6 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import type { Database } from '@/types/database'
 
 export async function signUp(formData: FormData) {
   const supabase = await createClient()

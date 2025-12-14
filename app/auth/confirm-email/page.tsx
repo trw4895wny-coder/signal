@@ -1,11 +1,12 @@
 import Link from 'next/link'
 
-export default function ConfirmEmailPage({
+export default async function ConfirmEmailPage({
   searchParams,
 }: {
-  searchParams: { email?: string }
+  searchParams: Promise<{ email?: string }>
 }) {
-  const email = searchParams.email
+  const params = await searchParams
+  const email = params.email
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
