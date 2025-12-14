@@ -111,12 +111,15 @@ export function AvatarUpload({ userId, currentAvatarUrl, onUploadComplete }: Ava
         throw uploadError
       }
 
-      // Get public URL
+      // Get public URL with cache-busting timestamp
       const { data: { publicUrl } } = supabase.storage
         .from('avatars')
         .getPublicUrl(fileName)
 
-      // Update profile with avatar URL
+      // Add timestamp to bust browser cache
+      const cacheBustedUrl = `${publicUrl}?t=${Date.now()}`
+
+      // Update profile with avatar URL (without cache buster)
       const { error: updateError } = await (supabase as any)
         .from('profiles')
         .update({ avatar_url: publicUrl })
@@ -126,7 +129,7 @@ export function AvatarUpload({ userId, currentAvatarUrl, onUploadComplete }: Ava
         throw updateError
       }
 
-      onUploadComplete(publicUrl)
+      onUploadComplete(cacheBustedUrl)
     } catch (error) {
       console.error('Error uploading avatar:', error)
       alert('Failed to upload avatar. Please try again.')

@@ -20,6 +20,7 @@ interface ProfileOverviewProps {
 export function ProfileOverview({ userId, profile }: ProfileOverviewProps) {
   const [isEditingProfile, setIsEditingProfile] = useState(false)
   const [currentProfile, setCurrentProfile] = useState(profile)
+  const [avatarKey, setAvatarKey] = useState(Date.now())
   const [connectionStats, setConnectionStats] = useState({
     total: 0,
     pending: 0,
@@ -50,6 +51,8 @@ export function ProfileOverview({ userId, profile }: ProfileOverviewProps) {
   }, [userId])
 
   const handleProfileUpdate = () => {
+    // Update avatar key to force reload with cache busting
+    setAvatarKey(Date.now())
     // Refresh the page to get updated data
     window.location.reload()
   }
@@ -74,7 +77,7 @@ export function ProfileOverview({ userId, profile }: ProfileOverviewProps) {
             <div className="w-full h-full rounded-full overflow-hidden bg-gray-900 text-white flex items-center justify-center text-4xl font-medium shadow-lg">
               {currentProfile.avatar_url ? (
                 <img
-                  src={currentProfile.avatar_url}
+                  src={`${currentProfile.avatar_url}?t=${avatarKey}`}
                   alt={currentProfile.full_name || 'Profile'}
                   className="w-full h-full object-cover"
                 />
