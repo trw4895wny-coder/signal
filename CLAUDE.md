@@ -209,6 +209,37 @@ NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 ```
 
+### Messaging System
+
+**Portal Structure:**
+- `/profile/messages` - LinkedIn-style two-panel messaging hub
+- Left panel: Conversation list (320px desktop, full width mobile)
+- Right panel: Message thread (flexible width)
+
+**Key Components:**
+- `MessagingHub` - Container with responsive layout logic
+- `ConversationList` - Search, last message preview, unread badges
+- `MessageThread` - Date-grouped messages, auto-scroll, Enter to send
+
+**API Endpoints:**
+```typescript
+GET /api/conversations           // All conversations with metadata
+GET /api/messages?connection_id  // Messages for a connection
+POST /api/messages               // Send a message
+POST /api/messages/read          // Mark messages as read
+```
+
+**Features:**
+- Auto-refresh: Conversations (10s), Messages (5s), Tab badges (10s)
+- Character limit: 2000 chars with counter when >80% full
+- Keyboard: Enter to send, Shift+Enter for new line
+- Mobile: List OR thread view with back button
+- Unread indicators: Blue dot, bold text, count badge
+- Message grouping by date (Today, Yesterday, dates)
+- Auto-mark as read when conversation opened
+
+**Future Enhancements:** See `MESSAGING_ENHANCEMENTS.md` for planned features (WebSocket, typing indicators, file attachments, etc.)
+
 ### Deployment
 
 - Push to GitHub triggers Vercel auto-deployment
