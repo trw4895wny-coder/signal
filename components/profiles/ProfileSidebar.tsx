@@ -242,7 +242,15 @@ export function ProfileSidebar({ userId, isMobileMenuOpen, onMobileMenuClose }: 
       </nav>
 
       {/* Settings Button */}
-      <div className="border-t border-gray-800 p-4">
+      <div className="relative border-t border-gray-800 p-4">
+        {/* Settings Popover */}
+        <SidebarSettings
+          isOpen={isSettingsOpen}
+          currentMode={sidebarMode}
+          onModeChange={handleModeChange}
+          onClose={() => setIsSettingsOpen(false)}
+        />
+
         <button
           onClick={() => setIsSettingsOpen(true)}
           className="w-full flex items-center justify-center gap-2 px-3 py-2 text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition-colors"
@@ -253,14 +261,6 @@ export function ProfileSidebar({ userId, isMobileMenuOpen, onMobileMenuClose }: 
         </button>
       </div>
     </div>
-
-    {/* Settings Modal */}
-    <SidebarSettings
-      isOpen={isSettingsOpen}
-      currentMode={sidebarMode}
-      onModeChange={handleModeChange}
-      onClose={() => setIsSettingsOpen(false)}
-    />
     </>
   )
 }
