@@ -70,8 +70,8 @@ export function ProfileOverview({ userId, profile }: ProfileOverviewProps) {
       <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
         <div className="flex items-start gap-6">
           {/* Avatar */}
-          <div className="flex-shrink-0">
-            <div className="w-32 h-32 rounded-full overflow-hidden bg-gray-900 text-white flex items-center justify-center text-4xl font-medium border-4 border-gray-100">
+          <div className="flex-shrink-0 w-32 h-32">
+            <div className="w-full h-full rounded-full overflow-hidden bg-gray-900 text-white flex items-center justify-center text-4xl font-medium shadow-lg">
               {currentProfile.avatar_url ? (
                 <img
                   src={currentProfile.avatar_url}
