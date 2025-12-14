@@ -11,6 +11,7 @@ interface ProfileTabsProps {
 export function ProfileTabs({ userId }: ProfileTabsProps) {
   const pathname = usePathname()
   const [pendingCount, setPendingCount] = useState(0)
+  const [unreadMessagesCount, setUnreadMessagesCount] = useState(0)
 
   useEffect(() => {
     // Fetch pending connection requests count
@@ -28,13 +29,41 @@ export function ProfileTabs({ userId }: ProfileTabsProps) {
         console.error('Error fetching pending count:', error)
       }
     }
+
+    // Fetch unread messages count
+    async function fetchUnreadCount() {
+      try {
+        const response = await fetch('/api/conversations')
+        if (response.ok) {
+          const conversations = await response.json()
+          const totalUnread = conversations.reduce(
+            (sum: number, conv: any) => sum + (conv.unread_count || 0),
+            0
+          )
+          setUnreadMessagesCount(totalUnread)
+        }
+      } catch (error) {
+        console.error('Error fetching unread count:', error)
+      }
+    }
+
     fetchPendingCount()
+    fetchUnreadCount()
+
+    // Poll for updates every 10 seconds
+    const interval = setInterval(() => {
+      fetchPendingCount()
+      fetchUnreadCount()
+    }, 10000)
+
+    return () => clearInterval(interval)
   }, [userId])
 
   const tabs = [
     { name: 'Overview', href: '/profile/overview', badge: null },
     { name: 'Signals', href: '/profile/signals', badge: null },
     { name: 'Connections', href: '/profile/connections', badge: pendingCount > 0 ? pendingCount : null },
+    { name: 'Messages', href: '/profile/messages', badge: unreadMessagesCount > 0 ? unreadMessagesCount : null },
     { name: 'Activity', href: '/profile/activity', badge: null },
   ]
 
