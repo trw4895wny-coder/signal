@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation'
 import { getUser, signOut } from '../auth/actions/auth'
-import { getSignalCategories, getSignalsByCategory, getUserSignals } from '@/lib/signals'
+import { getSignalCategories, getSignalsByCategory, getUserSignals, getProfileWithSignals } from '@/lib/signals'
 import { ProfileView } from '@/components/profiles/ProfileView'
 import { ConnectionRequests } from '@/components/connections/ConnectionRequests'
 import Link from 'next/link'
@@ -12,11 +12,19 @@ export default async function ProfilePage() {
     redirect('/auth/login')
   }
 
-  const [categories, signalsByCategory, userSignals] = await Promise.all([
+  const [categories, signalsByCategory, userSignals, profile] = await Promise.all([
     getSignalCategories(),
     getSignalsByCategory(),
     getUserSignals(user.id),
+    getProfileWithSignals(user.id),
   ])
+
+  const memberSince = profile?.created_at
+    ? new Date(profile.created_at).toLocaleDateString('en-US', {
+        month: 'long',
+        year: 'numeric',
+      })
+    : undefined
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -50,6 +58,9 @@ export default async function ProfilePage() {
           categories={categories}
           signalsByCategory={signalsByCategory}
           userSignals={userSignals}
+          userEmail={profile?.email}
+          userFullName={profile?.full_name || undefined}
+          memberSince={memberSince}
         />
 
         <ConnectionRequests userId={user.id} />
