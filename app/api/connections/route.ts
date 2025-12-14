@@ -15,7 +15,7 @@ export async function GET() {
 
   // Get all connections where user is involved
   const { data: connections, error } = await supabase
-    .from('connections')
+    .from('connections' as any)
     .select(`
       *,
       requester:requester_id(id, email, full_name),
@@ -54,7 +54,7 @@ export async function POST(request: Request) {
 
   // Check if connection already exists (in either direction)
   const { data: existing } = await supabase
-    .from('connections')
+    .from('connections' as any)
     .select('*')
     .or(
       `and(requester_id.eq.${user.id},receiver_id.eq.${receiver_id}),and(requester_id.eq.${receiver_id},receiver_id.eq.${user.id})`
@@ -70,7 +70,7 @@ export async function POST(request: Request) {
 
   // Create connection request
   const { data: connection, error } = await supabase
-    .from('connections')
+    .from('connections' as any)
     .insert({
       requester_id: user.id,
       receiver_id,

@@ -28,7 +28,7 @@ export async function PATCH(
 
   // Update connection status (RLS ensures only receiver can update)
   const { data: connection, error } = await supabase
-    .from('connections')
+    .from('connections' as any)
     .update({ status })
     .eq('id', id)
     .eq('receiver_id', user.id) // Ensure user is the receiver
