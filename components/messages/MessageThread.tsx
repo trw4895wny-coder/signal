@@ -85,7 +85,6 @@ export function MessageThread({
 
   async function markAsRead() {
     try {
-      console.log('[MessageThread] Marking messages as read for connection:', connectionId)
       const response = await fetch('/api/messages/read', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -93,20 +92,15 @@ export function MessageThread({
       })
 
       if (!response.ok) {
-        console.error('[MessageThread] Failed to mark as read:', response.status)
+        console.error('Failed to mark messages as read:', response.status)
         return
       }
 
-      const result = await response.json()
-      console.log('[MessageThread] Mark as read response:', result)
-
       // Notify parent that messages were marked as read
       if (onMessagesRead) {
-        console.log('[MessageThread] Calling onMessagesRead callback')
         onMessagesRead()
       }
       // Dispatch custom event for other components (like ProfileTabs) to listen to
-      console.log('[MessageThread] Dispatching messagesRead event')
       window.dispatchEvent(new CustomEvent('messagesRead'))
     } catch (error) {
       console.error('Error marking messages as read:', error)

@@ -72,13 +72,8 @@ export function MessagingHub({ userId }: MessagingHubProps) {
   }
 
   const handleMessagesRead = () => {
-    console.log('[MessagingHub] handleMessagesRead called, incrementing refresh trigger')
     // Trigger conversation list refresh
-    setRefreshTrigger((prev) => {
-      const next = prev + 1
-      console.log('[MessagingHub] Refresh trigger:', prev, '->', next)
-      return next
-    })
+    setRefreshTrigger((prev) => prev + 1)
   }
 
   // Mobile view: Show either list or thread
