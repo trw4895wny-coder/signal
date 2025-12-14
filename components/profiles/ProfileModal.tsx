@@ -172,7 +172,7 @@ export function ProfileModal({ profile, currentUserId, onClose }: ProfileModalPr
                         <span className="text-sm font-medium">Request sent</span>
                       </div>
                       <p className="text-xs text-gray-600">
-                        They'll be notified
+                        They&apos;ll be notified
                       </p>
                     </div>
                   ) : (
