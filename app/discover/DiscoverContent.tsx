@@ -187,5 +187,3 @@ export default function DiscoverContent() {
     </>
   )
 }
-
-export default DiscoverContent
