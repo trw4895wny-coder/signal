@@ -6,100 +6,52 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
 -- Clean up existing test profiles if they exist (idempotent migration)
 -- This allows the migration to be run multiple times safely
-DELETE FROM user_signals WHERE user_id IN (
-  SELECT id FROM profiles WHERE email LIKE '%@neuraltechai.com'
-  OR email LIKE '%@dataverse.io'
-  OR email LIKE '%@strategyadvisors.com'
-  OR email LIKE '%@grandhotelgroup.com'
-  OR email LIKE '%@finediningco.com'
-  OR email LIKE '%@resortgroup.com'
-  OR email LIKE '%@eventspro.com'
-  OR email LIKE '%@culinaryventures.com'
-  OR email LIKE '%@hotelchain.com'
-  OR email LIKE '%@tourismboard.org'
-  OR email LIKE '%@luxuryhotels.com'
-  OR email LIKE '%@premiumcatering.com'
-  OR email LIKE '%@revenuehotels.com'
-  OR email LIKE '%@openai-research.org'
-  OR email LIKE '%@cloudscale.tech'
-  OR email LIKE '%@mlproducts.ai'
-  OR email LIKE '%@securetech.io'
-  OR email LIKE '%@devopscloud.com'
-  OR email LIKE '%@webstartup.tech'
-  OR email LIKE '%@aiethics.org'
-  OR email LIKE '%@techcorp.com'
-  OR email LIKE '%@bainpartners.com'
-  OR email LIKE '%@advisorygroup.co'
-  OR email LIKE '%@changeexperts.com'
-  OR email LIKE '%@opsconsulting.io'
-  OR email LIKE '%@talentconsulting.com'
-  OR email LIKE '%@financeadvisors.co'
-  OR email LIKE '%@greenconsulting.org'
-  OR email LIKE '%@techconsultants.io'
-  OR email LIKE '%@productexperts.com'
-);
+-- Delete in correct order: user_signals -> auth.users (which cascades to profiles)
 
-DELETE FROM profiles WHERE email LIKE '%@neuraltechai.com'
-  OR email LIKE '%@dataverse.io'
-  OR email LIKE '%@strategyadvisors.com'
-  OR email LIKE '%@grandhotelgroup.com'
-  OR email LIKE '%@finediningco.com'
-  OR email LIKE '%@resortgroup.com'
-  OR email LIKE '%@eventspro.com'
-  OR email LIKE '%@culinaryventures.com'
-  OR email LIKE '%@hotelchain.com'
-  OR email LIKE '%@tourismboard.org'
-  OR email LIKE '%@luxuryhotels.com'
-  OR email LIKE '%@premiumcatering.com'
-  OR email LIKE '%@revenuehotels.com'
-  OR email LIKE '%@openai-research.org'
-  OR email LIKE '%@cloudscale.tech'
-  OR email LIKE '%@mlproducts.ai'
-  OR email LIKE '%@securetech.io'
-  OR email LIKE '%@devopscloud.com'
-  OR email LIKE '%@webstartup.tech'
-  OR email LIKE '%@aiethics.org'
-  OR email LIKE '%@techcorp.com'
-  OR email LIKE '%@bainpartners.com'
-  OR email LIKE '%@advisorygroup.co'
-  OR email LIKE '%@changeexperts.com'
-  OR email LIKE '%@opsconsulting.io'
-  OR email LIKE '%@talentconsulting.com'
-  OR email LIKE '%@financeadvisors.co'
-  OR email LIKE '%@greenconsulting.org'
-  OR email LIKE '%@techconsultants.io'
-  OR email LIKE '%@productexperts.com';
+DO $$
+DECLARE
+  test_uuids UUID[] := ARRAY[
+    '11111111-1111-1111-1111-111111111111'::uuid,
+    '11111111-1111-1111-1111-111111111112'::uuid,
+    '11111111-1111-1111-1111-111111111113'::uuid,
+    '11111111-1111-1111-1111-111111111114'::uuid,
+    '11111111-1111-1111-1111-111111111115'::uuid,
+    '11111111-1111-1111-1111-111111111116'::uuid,
+    '11111111-1111-1111-1111-111111111117'::uuid,
+    '11111111-1111-1111-1111-111111111118'::uuid,
+    '11111111-1111-1111-1111-111111111119'::uuid,
+    '11111111-1111-1111-1111-111111111120'::uuid,
+    '22222222-2222-2222-2222-222222222221'::uuid,
+    '22222222-2222-2222-2222-222222222222'::uuid,
+    '22222222-2222-2222-2222-222222222223'::uuid,
+    '22222222-2222-2222-2222-222222222224'::uuid,
+    '22222222-2222-2222-2222-222222222225'::uuid,
+    '22222222-2222-2222-2222-222222222226'::uuid,
+    '22222222-2222-2222-2222-222222222227'::uuid,
+    '22222222-2222-2222-2222-222222222228'::uuid,
+    '22222222-2222-2222-2222-222222222229'::uuid,
+    '22222222-2222-2222-2222-222222222230'::uuid,
+    '33333333-3333-3333-3333-333333333331'::uuid,
+    '33333333-3333-3333-3333-333333333332'::uuid,
+    '33333333-3333-3333-3333-333333333333'::uuid,
+    '33333333-3333-3333-3333-333333333334'::uuid,
+    '33333333-3333-3333-3333-333333333335'::uuid,
+    '33333333-3333-3333-3333-333333333336'::uuid,
+    '33333333-3333-3333-3333-333333333337'::uuid,
+    '33333333-3333-3333-3333-333333333338'::uuid,
+    '33333333-3333-3333-3333-333333333339'::uuid,
+    '33333333-3333-3333-3333-333333333340'::uuid
+  ];
+BEGIN
+  -- Delete user_signals first
+  DELETE FROM user_signals WHERE user_id = ANY(test_uuids);
 
-DELETE FROM auth.users WHERE email LIKE '%@neuraltechai.com'
-  OR email LIKE '%@dataverse.io'
-  OR email LIKE '%@strategyadvisors.com'
-  OR email LIKE '%@grandhotelgroup.com'
-  OR email LIKE '%@finediningco.com'
-  OR email LIKE '%@resortgroup.com'
-  OR email LIKE '%@eventspro.com'
-  OR email LIKE '%@culinaryventures.com'
-  OR email LIKE '%@hotelchain.com'
-  OR email LIKE '%@tourismboard.org'
-  OR email LIKE '%@luxuryhotels.com'
-  OR email LIKE '%@premiumcatering.com'
-  OR email LIKE '%@revenuehotels.com'
-  OR email LIKE '%@openai-research.org'
-  OR email LIKE '%@cloudscale.tech'
-  OR email LIKE '%@mlproducts.ai'
-  OR email LIKE '%@securetech.io'
-  OR email LIKE '%@devopscloud.com'
-  OR email LIKE '%@webstartup.tech'
-  OR email LIKE '%@aiethics.org'
-  OR email LIKE '%@techcorp.com'
-  OR email LIKE '%@bainpartners.com'
-  OR email LIKE '%@advisorygroup.co'
-  OR email LIKE '%@changeexperts.com'
-  OR email LIKE '%@opsconsulting.io'
-  OR email LIKE '%@talentconsulting.com'
-  OR email LIKE '%@financeadvisors.co'
-  OR email LIKE '%@greenconsulting.org'
-  OR email LIKE '%@techconsultants.io'
-  OR email LIKE '%@productexperts.com';
+  -- Delete profiles (if not already deleted by cascade)
+  DELETE FROM profiles WHERE id = ANY(test_uuids);
+
+  -- Delete auth users (will cascade to profiles if still exists)
+  DELETE FROM auth.users WHERE id = ANY(test_uuids);
+END $$;
 
 -- Insert auth users and profiles
 -- Note: In production, use Supabase Auth API. This is for testing only.
