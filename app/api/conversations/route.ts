@@ -60,6 +60,10 @@ export async function GET() {
         .eq('sender_id', otherUserId)
         .is('read_at', null)
 
+      if (unreadCount && unreadCount > 0) {
+        console.log('[API /conversations] Connection', connection.id, 'has', unreadCount, 'unread messages from', otherUserId)
+      }
+
       // Determine the other user
       const otherUser =
         connection.requester_id === user.id

@@ -22,18 +22,24 @@ export async function POST(request: Request) {
     )
   }
 
+  console.log('[API /messages/read] User:', user.id, 'Connection:', connection_id)
+
   // Mark all unread messages in this connection as read
   // Only mark messages where the user is NOT the sender
-  const { error } = await (supabase as any)
+  const { data, error, count } = await (supabase as any)
     .from('messages')
     .update({ read_at: new Date().toISOString() })
     .eq('connection_id', connection_id)
     .neq('sender_id', user.id)
     .is('read_at', null)
+    .select()
+
+  console.log('[API /messages/read] Updated', data?.length || 0, 'messages')
 
   if (error) {
+    console.error('[API /messages/read] Error:', error)
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 
-  return NextResponse.json({ success: true })
+  return NextResponse.json({ success: true, updated: data?.length || 0 })
 }
