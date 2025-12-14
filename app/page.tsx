@@ -6,12 +6,14 @@ import { createClient } from '@/lib/supabase/server'
 export default async function Home({
   searchParams,
 }: {
-  searchParams: { code?: string }
+  searchParams: Promise<{ code?: string }>
 }) {
+  const params = await searchParams
+
   // Handle email confirmation code
-  if (searchParams.code) {
+  if (params.code) {
     const supabase = await createClient()
-    await supabase.auth.exchangeCodeForSession(searchParams.code)
+    await supabase.auth.exchangeCodeForSession(params.code)
     redirect('/profile')
   }
 
