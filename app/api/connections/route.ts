@@ -14,8 +14,9 @@ export async function GET() {
   }
 
   // Get all connections where user is involved
+  // @ts-ignore - connections table not in generated types yet
   const { data: connections, error } = await supabase
-    .from('connections' as any)
+    .from('connections')
     .select(`
       *,
       requester:requester_id(id, email, full_name),
@@ -53,8 +54,9 @@ export async function POST(request: Request) {
   }
 
   // Check if connection already exists (in either direction)
+  // @ts-ignore - connections table not in generated types yet
   const { data: existing } = await supabase
-    .from('connections' as any)
+    .from('connections')
     .select('*')
     .or(
       `and(requester_id.eq.${user.id},receiver_id.eq.${receiver_id}),and(requester_id.eq.${receiver_id},receiver_id.eq.${user.id})`
@@ -69,13 +71,14 @@ export async function POST(request: Request) {
   }
 
   // Create connection request
+  // @ts-ignore - connections table not in generated types yet
   const { data: connection, error } = await supabase
-    .from('connections' as any)
+    .from('connections')
     .insert({
       requester_id: user.id,
       receiver_id,
       status: 'pending',
-    } as any)
+    })
     .select()
     .single()
 
