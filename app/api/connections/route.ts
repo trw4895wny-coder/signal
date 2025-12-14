@@ -14,7 +14,6 @@ export async function GET() {
   }
 
   // Get all connections where user is involved
-  // @ts-expect-error - connections table not in generated types yet
   const { data: connections, error } = await (supabase as any)
     .from('connections')
     .select(`
@@ -54,7 +53,6 @@ export async function POST(request: Request) {
   }
 
   // Check if connection already exists (in either direction)
-  // @ts-expect-error - connections table not in generated types yet
   const { data: existing } = await (supabase as any)
     .from('connections')
     .select('*')
@@ -71,7 +69,6 @@ export async function POST(request: Request) {
   }
 
   // Create connection request
-  // @ts-expect-error - connections table not in generated types yet
   const { data: connection, error } = await (supabase as any)
     .from('connections')
     .insert({
