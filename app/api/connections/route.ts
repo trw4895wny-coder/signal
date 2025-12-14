@@ -75,7 +75,7 @@ export async function POST(request: Request) {
       requester_id: user.id,
       receiver_id,
       status: 'pending',
-    })
+    } as any)
     .select()
     .single()
 
