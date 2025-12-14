@@ -76,6 +76,7 @@ VALUES (
 );
 
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '11111111-1111-1111-1111-111111111111',
   'sarah.chen@neuraltechai.com',
@@ -110,6 +111,7 @@ VALUES (
 );
 
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '11111111-1111-1111-1111-111111111112',
   'marcus.j@dataverse.io',
@@ -144,6 +146,7 @@ VALUES (
 );
 
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '11111111-1111-1111-1111-111111111113',
   'priya.patel@openai-research.org',
@@ -177,6 +180,7 @@ VALUES (
 );
 
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '11111111-1111-1111-1111-111111111114',
   'alex.rivera@cloudscale.tech',
@@ -211,6 +215,7 @@ VALUES (
 );
 
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '11111111-1111-1111-1111-111111111115',
   'emily.zhang@mlproducts.ai',
@@ -245,6 +250,7 @@ VALUES (
 );
 
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '11111111-1111-1111-1111-111111111116',
   'james.kim@securetech.io',
@@ -278,6 +284,7 @@ VALUES (
 );
 
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '11111111-1111-1111-1111-111111111117',
   'olivia.m@devopscloud.com',
@@ -312,6 +319,7 @@ VALUES (
 );
 
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '11111111-1111-1111-1111-111111111118',
   'david.lee@webstartup.tech',
@@ -345,6 +353,7 @@ VALUES (
 );
 
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '11111111-1111-1111-1111-111111111119',
   'rachel.brown@aiethics.org',
@@ -379,6 +388,7 @@ VALUES (
 );
 
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '11111111-1111-1111-1111-111111111120',
   'tom.wilson@techcorp.com',
@@ -417,6 +427,7 @@ VALUES (
 );
 
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '22222222-2222-2222-2222-222222222221',
   'michael.chen@strategyadvisors.com',
@@ -451,6 +462,7 @@ VALUES (
 );
 
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '22222222-2222-2222-2222-222222222222',
   'jennifer.lopez@bainpartners.com',
@@ -485,6 +497,7 @@ VALUES (
 );
 
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '22222222-2222-2222-2222-222222222223',
   'robert.anderson@advisorygroup.co',
@@ -518,6 +531,7 @@ VALUES (
 );
 
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '22222222-2222-2222-2222-222222222224',
   'lisa.wang@changeexperts.com',
@@ -552,6 +566,7 @@ VALUES (
 );
 
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '22222222-2222-2222-2222-222222222225',
   'kevin.obrien@opsconsulting.io',
@@ -585,6 +600,7 @@ VALUES (
 );
 
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '22222222-2222-2222-2222-222222222226',
   'amanda.taylor@talentconsulting.com',
@@ -618,6 +634,7 @@ VALUES (
 );
 
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '22222222-2222-2222-2222-222222222227',
   'daniel.kim@financeadvisors.co',
@@ -652,6 +669,7 @@ VALUES (
 );
 
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '22222222-2222-2222-2222-222222222228',
   'sophie.martin@greenconsulting.org',
@@ -686,6 +704,7 @@ VALUES (
 );
 
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '22222222-2222-2222-2222-222222222229',
   'chris.thompson@techconsultants.io',
@@ -719,6 +738,7 @@ VALUES (
 );
 
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '22222222-2222-2222-2222-222222222230',
   'maria.rodriguez@productexperts.com',
@@ -757,6 +777,7 @@ VALUES (
 );
 
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '33333333-3333-3333-3333-333333333331',
   'brian.foster@grandhotelgroup.com',
@@ -790,6 +811,7 @@ VALUES (
 );
 
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '33333333-3333-3333-3333-333333333332',
   'jessica.miller@finediningco.com',
@@ -823,6 +845,7 @@ VALUES (
 );
 
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '33333333-3333-3333-3333-333333333333',
   'anthony.garcia@resortgroup.com',
@@ -856,6 +879,7 @@ VALUES (
 );
 
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '33333333-3333-3333-3333-333333333334',
   'nicole.white@eventspro.com',
@@ -889,6 +913,7 @@ VALUES (
 );
 
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '33333333-3333-3333-3333-333333333335',
   'carlos.sanchez@culinaryventures.com',
@@ -922,6 +947,7 @@ VALUES (
 );
 
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '33333333-3333-3333-3333-333333333336',
   'sarah.johnson@hotelchain.com',
@@ -955,6 +981,7 @@ VALUES (
 );
 
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '33333333-3333-3333-3333-333333333337',
   'mark.davis@tourismboard.org',
@@ -988,6 +1015,7 @@ VALUES (
 );
 
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '33333333-3333-3333-3333-333333333338',
   'rachel.green@luxuryhotels.com',
@@ -1021,6 +1049,7 @@ VALUES (
 );
 
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '33333333-3333-3333-3333-333333333339',
   'patrick.lee@premiumcatering.com',
@@ -1054,6 +1083,7 @@ VALUES (
 );
 
 INSERT INTO profiles (id, email, full_name, headline, bio, location, website, avatar_url)
+ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url
 VALUES (
   '33333333-3333-3333-3333-333333333340',
   'diana.martinez@revenuehotels.com',
