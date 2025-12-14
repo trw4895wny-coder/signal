@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation'
 import { getUser, signOut } from '../auth/actions/auth'
 import { getSignalCategories, getSignalsByCategory, getUserSignals } from '@/lib/signals'
 import { ProfileView } from '@/components/profiles/ProfileView'
+import { ConnectionRequests } from '@/components/connections/ConnectionRequests'
 import Link from 'next/link'
 
 export default async function ProfilePage() {
@@ -43,13 +44,15 @@ export default async function ProfilePage() {
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto px-4 py-8">
+      <main className="max-w-4xl mx-auto px-4 py-8 space-y-8">
         <ProfileView
           userId={user.id}
           categories={categories}
           signalsByCategory={signalsByCategory}
           userSignals={userSignals}
         />
+
+        <ConnectionRequests userId={user.id} />
       </main>
     </div>
   )

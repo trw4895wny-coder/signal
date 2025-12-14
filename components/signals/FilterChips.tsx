@@ -16,7 +16,7 @@ export function FilterChips({
 }: FilterChipsProps) {
   const [selectedSignals, setSelectedSignals] = useState<Set<string>>(new Set())
   const [isAddingFilter, setIsAddingFilter] = useState(false)
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
+  const [hoveredCategory, setHoveredCategory] = useState<string | null>(null)
   const menuRef = useRef<HTMLDivElement>(null)
 
   // Close menu when clicking outside
@@ -24,7 +24,7 @@ export function FilterChips({
     function handleClickOutside(event: MouseEvent) {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setIsAddingFilter(false)
-        setSelectedCategory(null)
+        setHoveredCategory(null)
       }
     }
 
@@ -51,7 +51,7 @@ export function FilterChips({
     setSelectedSignals(newSelected)
     onFilterChange(Array.from(newSelected))
     setIsAddingFilter(false)
-    setSelectedCategory(null)
+    setHoveredCategory(null)
   }
 
   const handleRemoveSignal = (signalId: string) => {
@@ -119,61 +119,49 @@ export function FilterChips({
             <span>Add filter</span>
           </button>
 
-          {/* Filter menu */}
+          {/* Filter menu - Cascading */}
           {isAddingFilter && (
-            <div className="absolute top-full mt-2 left-0 bg-white border border-gray-200 rounded-lg shadow-lg z-10 min-w-[280px] overflow-hidden">
-              {!selectedCategory ? (
-                /* Category selection */
-                <div className="py-2">
-                  <div className="px-4 py-2 text-xs font-medium text-gray-500 uppercase tracking-wide">
-                    Select category
-                  </div>
-                  {categories.map((category) => (
-                    <button
-                      key={category.id}
-                      onClick={() => setSelectedCategory(category.id)}
-                      className="w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 transition-colors flex items-center justify-between group"
-                    >
-                      <span className="text-gray-900">{category.name}</span>
-                      <svg
-                        className="w-4 h-4 text-gray-400 group-hover:text-gray-600"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M9 5l7 7-7 7"
-                        />
-                      </svg>
-                    </button>
-                  ))}
+            <div className="absolute top-full mt-2 left-0 bg-white border border-gray-200 rounded-lg shadow-lg z-10 overflow-hidden flex">
+              {/* Categories column */}
+              <div className="py-2 min-w-[200px] border-r border-gray-100">
+                <div className="px-4 py-2 text-xs font-medium text-gray-500 uppercase tracking-wide">
+                  Select category
                 </div>
-              ) : (
-                /* Signal selection */
-                <div className="py-2">
-                  <div className="px-4 py-2 flex items-center justify-between border-b border-gray-100">
-                    <button
-                      onClick={() => setSelectedCategory(null)}
-                      className="flex items-center gap-1 text-sm text-gray-600 hover:text-gray-900"
+                {categories.map((category) => (
+                  <button
+                    key={category.id}
+                    onMouseEnter={() => setHoveredCategory(category.id)}
+                    className={`w-full text-left px-4 py-2.5 text-sm transition-colors flex items-center justify-between group ${
+                      hoveredCategory === category.id
+                        ? 'bg-gray-100 text-gray-900'
+                        : 'text-gray-700 hover:bg-gray-50'
+                    }`}
+                  >
+                    <span>{category.name}</span>
+                    <svg
+                      className="w-4 h-4 text-gray-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
                     >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M15 19l-7-7 7-7"
-                        />
-                      </svg>
-                      <span>Back</span>
-                    </button>
-                    <span className="text-xs font-medium text-gray-500">
-                      {getCategoryById(selectedCategory)?.name}
-                    </span>
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </button>
+                ))}
+              </div>
+
+              {/* Signals column */}
+              {hoveredCategory && (
+                <div className="py-2 min-w-[240px] max-h-[400px] overflow-y-auto">
+                  <div className="px-4 py-2 text-xs font-medium text-gray-500 uppercase tracking-wide">
+                    {getCategoryById(hoveredCategory)?.name}
                   </div>
-                  {(signalsByCategory[selectedCategory] || []).map((signal) => {
+                  {(signalsByCategory[hoveredCategory] || []).map((signal) => {
                     const isSelected = selectedSignals.has(signal.id)
                     return (
                       <button
@@ -182,8 +170,8 @@ export function FilterChips({
                         disabled={isSelected}
                         className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${
                           isSelected
-                            ? 'text-gray-400 cursor-not-allowed'
-                            : 'text-gray-900 hover:bg-gray-50'
+                            ? 'text-gray-400 cursor-not-allowed bg-gray-50'
+                            : 'text-gray-900 hover:bg-gray-100'
                         }`}
                       >
                         <span className="flex items-center gap-2">

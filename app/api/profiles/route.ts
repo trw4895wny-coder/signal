@@ -4,7 +4,13 @@ import { NextResponse } from 'next/server'
 export async function GET() {
   const supabase = await createClient()
 
-  const { data, error } = await supabase
+  // Get current user
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  // Fetch all profiles except the current user
+  const query = supabase
     .from('profiles')
     .select(`
       *,
@@ -16,6 +22,13 @@ export async function GET() {
         )
       )
     `)
+
+  // If user is authenticated, exclude their profile
+  if (user) {
+    query.neq('id', user.id)
+  }
+
+  const { data, error } = await query
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 })

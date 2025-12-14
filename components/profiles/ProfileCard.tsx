@@ -3,9 +3,10 @@ import { getDaysUntilExpiration } from '@/types/signals'
 
 interface ProfileCardProps {
   profile: ProfileWithSignals
+  onClick?: () => void
 }
 
-export function ProfileCard({ profile }: ProfileCardProps) {
+export function ProfileCard({ profile, onClick }: ProfileCardProps) {
   // Group signals by category
   const signalsByCategory = profile.signals.reduce(
     (acc, userSignal) => {
@@ -20,7 +21,12 @@ export function ProfileCard({ profile }: ProfileCardProps) {
   )
 
   return (
-    <div className="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow">
+    <div
+      onClick={onClick}
+      className={`bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-all ${
+        onClick ? 'cursor-pointer hover:scale-[1.02] active:scale-[0.98]' : ''
+      }`}
+    >
       <div className="mb-4">
         <h3 className="text-lg font-medium text-gray-900">
           {profile.full_name || 'Anonymous'}
