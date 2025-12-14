@@ -75,6 +75,16 @@ export function ProfileModal({ profile, currentUserId, onClose }: ProfileModalPr
     year: 'numeric',
   })
 
+  const getInitials = () => {
+    if (profile.full_name) {
+      return profile.full_name[0].toUpperCase()
+    }
+    if (profile.email) {
+      return profile.email[0].toUpperCase()
+    }
+    return 'A'
+  }
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-start justify-center p-4 bg-black/50 backdrop-blur-sm animate-fadeIn overflow-y-auto"
@@ -85,32 +95,84 @@ export function ProfileModal({ profile, currentUserId, onClose }: ProfileModalPr
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-start justify-between rounded-t-xl">
-          <div>
-            <h2 className="text-xl font-medium text-gray-900">
-              {profile.full_name || 'Anonymous'}
-            </h2>
-            <p className="text-sm text-gray-600 mt-0.5">{profile.email}</p>
-            <p className="text-xs text-gray-500 mt-1">Member since {memberSince}</p>
+        <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-5 rounded-t-xl">
+          <div className="flex items-start gap-4">
+            {/* Avatar */}
+            <div className="w-16 h-16 rounded-full overflow-hidden bg-gray-900 text-white flex items-center justify-center font-medium text-xl flex-shrink-0">
+              {profile.avatar_url ? (
+                <img
+                  src={profile.avatar_url}
+                  alt={profile.full_name || 'Profile'}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <span>{getInitials()}</span>
+              )}
+            </div>
+
+            <div className="flex-1 min-w-0">
+              <h2 className="text-xl font-medium text-gray-900">
+                {profile.full_name || 'Anonymous'}
+              </h2>
+              {profile.headline && (
+                <p className="text-sm text-gray-700 mt-1">{profile.headline}</p>
+              )}
+              <div className="flex flex-wrap items-center gap-2 mt-2 text-xs text-gray-500">
+                {profile.location && (
+                  <span className="flex items-center gap-1">
+                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    {profile.location}
+                  </span>
+                )}
+                <span>Member since {memberSince}</span>
+              </div>
+            </div>
+
+            <button
+              onClick={onClose}
+              className="text-gray-400 hover:text-gray-600 transition-colors flex-shrink-0"
+              aria-label="Close"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
           </div>
-          <button
-            onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 transition-colors -mt-1"
-            aria-label="Close"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
         </div>
 
         {/* Content */}
         <div className="px-6 py-4">
+          {/* Bio */}
+          {profile.bio && (
+            <div className="mb-4 pb-4 border-b border-gray-200">
+              <p className="text-sm text-gray-700 whitespace-pre-wrap">{profile.bio}</p>
+            </div>
+          )}
+
+          {/* Website */}
+          {profile.website && (
+            <div className="mb-4">
+              <a
+                href={profile.website}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-blue-600 hover:underline inline-flex items-center gap-1"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                </svg>
+                {profile.website.replace(/^https?:\/\//, '')}
+              </a>
+            </div>
+          )}
           {profile.signals.length > 0 ? (
             <div>
               <h3 className="text-base font-medium text-gray-900 mb-3">Signals</h3>

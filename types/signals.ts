@@ -15,6 +15,11 @@ export interface UserSignalWithDetails extends UserSignal {
 
 export interface ProfileWithSignals extends Profile {
   signals: UserSignalWithDetails[]
+  headline?: string | null
+  bio?: string | null
+  location?: string | null
+  website?: string | null
+  avatar_url?: string | null
 }
 
 // Constraint constants from design doc

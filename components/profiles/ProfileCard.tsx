@@ -20,18 +20,48 @@ export function ProfileCard({ profile, onClick }: ProfileCardProps) {
     {} as Record<string, typeof profile.signals>
   )
 
+  const getInitials = () => {
+    if (profile.full_name) {
+      return profile.full_name[0].toUpperCase()
+    }
+    if (profile.email) {
+      return profile.email[0].toUpperCase()
+    }
+    return 'A'
+  }
+
   return (
     <div
       onClick={onClick}
-      className={`bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-all ${
+      className={`bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-all border border-gray-200 ${
         onClick ? 'cursor-pointer hover:scale-[1.02] active:scale-[0.98]' : ''
       }`}
     >
-      <div className="mb-4">
-        <h3 className="text-lg font-medium text-gray-900">
-          {profile.full_name || 'Anonymous'}
-        </h3>
-        <p className="text-sm text-gray-600">{profile.email}</p>
+      <div className="flex items-start gap-4 mb-4">
+        {/* Avatar */}
+        <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-900 text-white flex items-center justify-center font-medium flex-shrink-0">
+          {profile.avatar_url ? (
+            <img
+              src={profile.avatar_url}
+              alt={profile.full_name || 'Profile'}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <span>{getInitials()}</span>
+          )}
+        </div>
+
+        <div className="flex-1 min-w-0">
+          <h3 className="text-lg font-medium text-gray-900 truncate">
+            {profile.full_name || 'Anonymous'}
+          </h3>
+          {profile.headline && (
+            <p className="text-sm text-gray-600 line-clamp-2">{profile.headline}</p>
+          )}
+          {profile.location && (
+            <p className="text-xs text-gray-500 mt-1">{profile.location}</p>
+          )}
+        </div>
       </div>
 
       {profile.signals.length > 0 ? (
