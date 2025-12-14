@@ -48,3 +48,33 @@ export async function PATCH(
 
   return NextResponse.json(connection)
 }
+
+// DELETE /api/connections/:id - Remove a connection
+export async function DELETE(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const supabase = await createClient()
+  const { id } = await params
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  // Delete connection (only if user is part of it)
+  const { error } = await (supabase as any)
+    .from('connections')
+    .delete()
+    .eq('id', id)
+    .or(`requester_id.eq.${user.id},receiver_id.eq.${user.id}`)
+
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 })
+  }
+
+  return NextResponse.json({ success: true })
+}

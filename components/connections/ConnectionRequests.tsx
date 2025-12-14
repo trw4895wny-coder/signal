@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { MessageModal } from '@/components/messages/MessageModal'
 
 interface Connection {
   id: string
@@ -12,11 +13,13 @@ interface Connection {
     id: string
     email: string
     full_name: string | null
+    avatar_url?: string | null
   }
   receiver: {
     id: string
     email: string
     full_name: string | null
+    avatar_url?: string | null
   }
 }
 
@@ -24,6 +27,8 @@ export function ConnectionRequests({ userId }: { userId: string }) {
   const [connections, setConnections] = useState<Connection[]>([])
   const [loading, setLoading] = useState(true)
   const [processingId, setProcessingId] = useState<string | null>(null)
+  const [messageConnection, setMessageConnection] = useState<Connection | null>(null)
+  const [connectionToRemove, setConnectionToRemove] = useState<string | null>(null)
 
   useEffect(() => {
     fetchConnections()
@@ -57,6 +62,25 @@ export function ConnectionRequests({ userId }: { userId: string }) {
       }
     } catch (error) {
       console.error('Error updating connection:', error)
+    } finally {
+      setProcessingId(null)
+    }
+  }
+
+  async function handleRemoveConnection(connectionId: string) {
+    setProcessingId(connectionId)
+    try {
+      const response = await fetch(`/api/connections/${connectionId}`, {
+        method: 'DELETE',
+      })
+
+      if (response.ok) {
+        setConnectionToRemove(null)
+        await fetchConnections()
+      }
+    } catch (error) {
+      console.error('Error removing connection:', error)
+      alert('Failed to remove connection')
     } finally {
       setProcessingId(null)
     }
@@ -152,7 +176,7 @@ export function ConnectionRequests({ userId }: { userId: string }) {
             </div>
           </div>
           <div className="p-4">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="space-y-3">
               {acceptedConnections.map((connection) => {
                 const otherUser =
                   connection.requester_id === userId
@@ -172,10 +196,19 @@ export function ConnectionRequests({ userId }: { userId: string }) {
                       </p>
                       <p className="text-sm text-gray-600 truncate">{otherUser.email}</p>
                     </div>
-                    <div className="flex-shrink-0">
-                      <span className="inline-flex items-center px-2 py-1 rounded-full bg-green-100 text-green-700 text-xs font-medium">
-                        Connected
-                      </span>
+                    <div className="flex items-center gap-2 flex-shrink-0">
+                      <button
+                        onClick={() => setMessageConnection(connection)}
+                        className="px-3 py-1.5 rounded-lg bg-gray-900 text-white text-sm font-medium hover:bg-gray-800 transition-colors"
+                      >
+                        Message
+                      </button>
+                      <button
+                        onClick={() => setConnectionToRemove(connection.id)}
+                        className="px-3 py-1.5 rounded-lg border border-red-300 text-red-600 text-sm font-medium hover:bg-red-50 transition-colors"
+                      >
+                        Remove
+                      </button>
                     </div>
                   </div>
                 )
@@ -250,6 +283,54 @@ export function ConnectionRequests({ userId }: { userId: string }) {
           <p className="text-sm text-gray-500">
             Discover professionals and send connection requests to start networking
           </p>
+        </div>
+      )}
+
+      {/* Message Modal */}
+      {messageConnection && (
+        <MessageModal
+          connectionId={messageConnection.id}
+          currentUserId={userId}
+          otherUser={
+            messageConnection.requester_id === userId
+              ? messageConnection.receiver
+              : messageConnection.requester
+          }
+          onClose={() => setMessageConnection(null)}
+        />
+      )}
+
+      {/* Remove Connection Confirmation */}
+      {connectionToRemove && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+          onClick={() => setConnectionToRemove(null)}
+        >
+          <div
+            className="bg-white rounded-xl shadow-2xl max-w-md w-full p-6"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 className="text-lg font-medium text-gray-900 mb-2">Remove Connection?</h3>
+            <p className="text-sm text-gray-600 mb-6">
+              Are you sure you want to remove this connection? You&apos;ll need to send a new request to reconnect.
+            </p>
+            <div className="flex gap-3 justify-end">
+              <button
+                onClick={() => setConnectionToRemove(null)}
+                disabled={processingId === connectionToRemove}
+                className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 text-sm font-medium hover:bg-gray-50 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => handleRemoveConnection(connectionToRemove)}
+                disabled={processingId === connectionToRemove}
+                className="px-4 py-2 rounded-lg bg-red-600 text-white text-sm font-medium hover:bg-red-700 transition-colors disabled:opacity-50"
+              >
+                {processingId === connectionToRemove ? 'Removing...' : 'Remove Connection'}
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
