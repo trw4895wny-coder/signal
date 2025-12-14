@@ -77,55 +77,25 @@ export function SidebarSettings({ isOpen, currentMode, onModeChange, onClose }: 
       {/* Options */}
       <div className="p-2 space-y-1">
         {modes.map((mode) => (
-          <label
+          <button
             key={mode.value}
+            onClick={() => onModeChange(mode.value)}
             className={`
-              flex items-start gap-3 px-3 py-2.5 rounded-md cursor-pointer transition-colors group
+              w-full text-left px-3 py-2.5 rounded-md cursor-pointer transition-colors
               ${
                 currentMode === mode.value
-                  ? 'bg-gray-800'
-                  : 'hover:bg-gray-800/50'
+                  ? 'bg-gray-800 text-white'
+                  : 'text-gray-400 hover:bg-gray-800/50 hover:text-gray-300'
               }
             `}
           >
-            {/* Custom radio button circle */}
-            <div className="relative flex items-center justify-center w-4 h-4 mt-0.5">
-              <div
-                className={`w-4 h-4 rounded-full border-2 transition-colors ${
-                  currentMode === mode.value
-                    ? 'border-blue-500 bg-blue-500'
-                    : 'border-gray-600 bg-transparent group-hover:border-gray-500'
-                }`}
-              >
-                {currentMode === mode.value && (
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-1.5 h-1.5 bg-white rounded-full" />
-                  </div>
-                )}
-              </div>
-              <input
-                type="radio"
-                name="sidebar-mode"
-                value={mode.value}
-                checked={currentMode === mode.value}
-                onChange={() => onModeChange(mode.value)}
-                className="sr-only"
-              />
+            <div className="text-sm font-medium">
+              {mode.label}
             </div>
-
-            <div className="flex-1">
-              <div
-                className={`text-sm font-medium ${
-                  currentMode === mode.value ? 'text-white' : 'text-gray-300'
-                }`}
-              >
-                {mode.label}
-              </div>
-              <div className="text-xs text-gray-500 mt-0.5">
-                {mode.description}
-              </div>
+            <div className="text-xs text-gray-500 mt-0.5">
+              {mode.description}
             </div>
-          </label>
+          </button>
         ))}
       </div>
     </div>
