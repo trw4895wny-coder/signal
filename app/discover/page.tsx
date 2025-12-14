@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { SignalFilter } from '@/components/signals/SignalFilter'
+import { FilterChips } from '@/components/signals/FilterChips'
 import { ProfileCard } from '@/components/profiles/ProfileCard'
 import type { ProfileWithSignals, SignalCategory, Signal } from '@/types/signals'
 
@@ -101,35 +101,34 @@ export default function DiscoverPage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          <aside className="lg:col-span-1">
-            <SignalFilter
-              categories={categories}
-              signalsByCategory={signalsByCategory}
-              onFilterChange={setSelectedSignals}
-            />
-          </aside>
-
-          <div className="lg:col-span-3">
-            <div className="mb-4">
-              <p className="text-sm text-gray-600">
-                {filteredProfiles.length} profile{filteredProfiles.length !== 1 ? 's' : ''} found
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {filteredProfiles.map((profile) => (
-                <ProfileCard key={profile.id} profile={profile} />
-              ))}
-            </div>
-
-            {filteredProfiles.length === 0 && (
-              <div className="text-center py-12">
-                <p className="text-gray-600">No profiles match your filters</p>
-              </div>
-            )}
-          </div>
+        {/* Filter Chips */}
+        <div className="mb-8">
+          <FilterChips
+            categories={categories}
+            signalsByCategory={signalsByCategory}
+            onFilterChange={setSelectedSignals}
+          />
         </div>
+
+        {/* Results count */}
+        <div className="mb-4">
+          <p className="text-sm text-gray-600">
+            {filteredProfiles.length} profile{filteredProfiles.length !== 1 ? 's' : ''} found
+          </p>
+        </div>
+
+        {/* Profile grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {filteredProfiles.map((profile) => (
+            <ProfileCard key={profile.id} profile={profile} />
+          ))}
+        </div>
+
+        {filteredProfiles.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-gray-600">No profiles match your filters</p>
+          </div>
+        )}
       </main>
     </div>
   )
