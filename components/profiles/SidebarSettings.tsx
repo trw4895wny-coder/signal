@@ -67,21 +67,21 @@ export function SidebarSettings({ isOpen, currentMode, onModeChange, onClose }: 
   return (
     <div
       ref={panelRef}
-      className="absolute bottom-full left-0 mb-2 ml-2 w-64 bg-gray-900 rounded-lg shadow-2xl border border-gray-800 animate-in fade-in slide-in-from-bottom-2 duration-200"
+      className="absolute bottom-full left-0 mb-2 ml-2 w-48 bg-gray-900 rounded-lg shadow-2xl border border-gray-800 animate-in fade-in slide-in-from-bottom-2 duration-200"
     >
       {/* Header */}
-      <div className="px-4 py-3 border-b border-gray-800">
-        <h3 className="text-sm font-medium text-white">Sidebar control</h3>
+      <div className="px-3 py-2 border-b border-gray-800">
+        <h3 className="text-xs font-medium text-white">Sidebar control</h3>
       </div>
 
       {/* Options */}
-      <div className="p-2 space-y-1">
+      <div className="p-1.5 space-y-0.5">
         {modes.map((mode) => (
           <button
             key={mode.value}
             onClick={() => onModeChange(mode.value)}
             className={`
-              w-full text-left px-3 py-2.5 rounded-md cursor-pointer transition-colors
+              w-full text-left px-2.5 py-2 rounded-md cursor-pointer transition-colors
               ${
                 currentMode === mode.value
                   ? 'bg-gray-800 text-white'
@@ -89,10 +89,10 @@ export function SidebarSettings({ isOpen, currentMode, onModeChange, onClose }: 
               }
             `}
           >
-            <div className="text-sm font-medium">
+            <div className="text-xs font-medium">
               {mode.label}
             </div>
-            <div className="text-xs text-gray-500 mt-0.5">
+            <div className="text-[10px] text-gray-500 mt-0.5">
               {mode.description}
             </div>
           </button>
