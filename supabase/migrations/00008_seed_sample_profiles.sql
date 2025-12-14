@@ -76,6 +76,7 @@ VALUES (
   'San Francisco, CA',
   'https://sarahchen.dev',
   'https://i.pravatar.cc/150?u=sarah.chen@neuraltechai.com'
+)
 ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
@@ -107,6 +108,7 @@ VALUES (
   'New York, NY',
   NULL,
   'https://i.pravatar.cc/150?u=marcus.j@dataverse.io'
+)
 ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
@@ -138,6 +140,7 @@ VALUES (
   'Seattle, WA',
   'https://priyapatel.ai',
   'https://i.pravatar.cc/150?u=priya.patel@openai-research.org'
+)
 ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
@@ -168,6 +171,7 @@ VALUES (
   'Austin, TX',
   'https://alexrivera.io',
   'https://i.pravatar.cc/150?u=alex.rivera@cloudscale.tech'
+)
 ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
@@ -199,6 +203,7 @@ VALUES (
   'Los Angeles, CA',
   NULL,
   'https://i.pravatar.cc/150?u=emily.zhang@mlproducts.ai'
+)
 ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
@@ -230,6 +235,7 @@ VALUES (
   'Boston, MA',
   'https://jameskim.security',
   'https://i.pravatar.cc/150?u=james.kim@securetech.io'
+)
 ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
@@ -260,6 +266,7 @@ VALUES (
   'Denver, CO',
   NULL,
   'https://i.pravatar.cc/150?u=olivia.m@devopscloud.com'
+)
 ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
@@ -291,6 +298,7 @@ VALUES (
   'Portland, OR',
   'https://davidlee.dev',
   'https://i.pravatar.cc/150?u=david.lee@webstartup.tech'
+)
 ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
@@ -321,6 +329,7 @@ VALUES (
   'Washington, DC',
   'https://rachelbrown.org',
   'https://i.pravatar.cc/150?u=rachel.brown@aiethics.org'
+)
 ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
@@ -352,6 +361,7 @@ VALUES (
   'Chicago, IL',
   NULL,
   'https://i.pravatar.cc/150?u=tom.wilson@techcorp.com'
+)
 ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
@@ -386,6 +396,7 @@ VALUES (
   'New York, NY',
   'https://michaelchen.consulting',
   'https://i.pravatar.cc/150?u=michael.chen@strategyadvisors.com'
+)
 ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
@@ -417,6 +428,7 @@ VALUES (
   'Boston, MA',
   NULL,
   'https://i.pravatar.cc/150?u=jennifer.lopez@bainpartners.com'
+)
 ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
@@ -448,6 +460,7 @@ VALUES (
   'San Francisco, CA',
   'https://robertanderson.co',
   'https://i.pravatar.cc/150?u=robert.anderson@advisorygroup.co'
+)
 ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
@@ -478,6 +491,7 @@ VALUES (
   'Atlanta, GA',
   NULL,
   'https://i.pravatar.cc/150?u=lisa.wang@changeexperts.com'
+)
 ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
@@ -509,6 +523,7 @@ VALUES (
   'Dallas, TX',
   'https://kevinobrien.consulting',
   'https://i.pravatar.cc/150?u=kevin.obrien@opsconsulting.io'
+)
 ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
@@ -539,6 +554,7 @@ VALUES (
   'Miami, FL',
   NULL,
   'https://i.pravatar.cc/150?u=amanda.taylor@talentconsulting.com'
+)
 ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
@@ -569,6 +585,7 @@ VALUES (
   'Seattle, WA',
   'https://danielkim.finance',
   'https://i.pravatar.cc/150?u=daniel.kim@financeadvisors.co'
+)
 ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
@@ -600,6 +617,7 @@ VALUES (
   'San Diego, CA',
   'https://sophiemartin.eco',
   'https://i.pravatar.cc/150?u=sophie.martin@greenconsulting.org'
+)
 ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
@@ -631,6 +649,7 @@ VALUES (
   'Phoenix, AZ',
   NULL,
   'https://i.pravatar.cc/150?u=chris.thompson@techconsultants.io'
+)
 ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
@@ -661,6 +680,7 @@ VALUES (
   'Austin, TX',
   'https://mariarodriguez.pm',
   'https://i.pravatar.cc/150?u=maria.rodriguez@productexperts.com'
+)
 ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
@@ -695,6 +715,7 @@ VALUES (
   'Chicago, IL',
   NULL,
   'https://i.pravatar.cc/150?u=brian.foster@grandhotelgroup.com'
+)
 ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
@@ -725,6 +746,7 @@ VALUES (
   'New York, NY',
   NULL,
   'https://i.pravatar.cc/150?u=jessica.miller@finediningco.com'
+)
 ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
@@ -755,6 +777,7 @@ VALUES (
   'Miami, FL',
   'https://anthonygarcia.hospitality',
   'https://i.pravatar.cc/150?u=anthony.garcia@resortgroup.com'
+)
 ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
@@ -785,6 +808,7 @@ VALUES (
   'Las Vegas, NV',
   NULL,
   'https://i.pravatar.cc/150?u=nicole.white@eventspro.com'
+)
 ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
@@ -815,6 +839,7 @@ VALUES (
   'Los Angeles, CA',
   'https://carlossanchez.chef',
   'https://i.pravatar.cc/150?u=carlos.sanchez@culinaryventures.com'
+)
 ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
@@ -845,6 +870,7 @@ VALUES (
   'Orlando, FL',
   NULL,
   'https://i.pravatar.cc/150?u=sarah.johnson@hotelchain.com'
+)
 ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
@@ -875,6 +901,7 @@ VALUES (
   'San Antonio, TX',
   'https://markdavis.tourism',
   'https://i.pravatar.cc/150?u=mark.davis@tourismboard.org'
+)
 ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
@@ -905,6 +932,7 @@ VALUES (
   'San Francisco, CA',
   NULL,
   'https://i.pravatar.cc/150?u=rachel.green@luxuryhotels.com'
+)
 ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
@@ -935,6 +963,7 @@ VALUES (
   'Washington, DC',
   'https://patricklee.catering',
   'https://i.pravatar.cc/150?u=patrick.lee@premiumcatering.com'
+)
 ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
@@ -965,6 +994,7 @@ VALUES (
   'Nashville, TN',
   NULL,
   'https://i.pravatar.cc/150?u=diana.martinez@revenuehotels.com'
+)
 ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, full_name = EXCLUDED.full_name, headline = EXCLUDED.headline, bio = EXCLUDED.bio, location = EXCLUDED.location, website = EXCLUDED.website, avatar_url = EXCLUDED.avatar_url;
 INSERT INTO user_signals (user_id, signal_id, created_at, expires_at)
 VALUES
