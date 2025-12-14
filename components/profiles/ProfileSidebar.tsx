@@ -247,5 +247,6 @@ export function ProfileSidebar({ userId, isMobileMenuOpen, onMobileMenuClose }: 
         </button>
       </div>
     </div>
+    </>
   )
 }
