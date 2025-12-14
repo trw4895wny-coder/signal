@@ -63,7 +63,7 @@ export default function DiscoverPage() {
       setFilteredProfiles([])
     } else {
       const filtered = profiles.filter((profile) =>
-        selectedSignals.every((signalId) =>
+        selectedSignals.some((signalId) =>
           profile.signals.some((us) => us.signal_id === signalId)
         )
       )
