@@ -25,7 +25,7 @@ export function ProfileLayoutWrapper({ userId, signOutAction, children }: Profil
 
       <ProfileLayoutClient>
         <header className="bg-white border-b border-gray-200 sticky top-0 z-10">
-          <div className="px-4 md:px-8 py-4 flex items-center justify-between">
+          <div className="px-4 py-3 flex items-center justify-between">
             <div className="flex items-center gap-4">
               {/* Mobile menu button */}
               <button
@@ -57,7 +57,7 @@ export function ProfileLayoutWrapper({ userId, signOutAction, children }: Profil
           </div>
         </header>
 
-        <main className="px-4 md:px-8 py-8">
+        <main className="px-4 py-6">
           {children}
         </main>
       </ProfileLayoutClient>
