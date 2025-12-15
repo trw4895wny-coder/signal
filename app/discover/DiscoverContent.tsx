@@ -86,7 +86,7 @@ export default function DiscoverContent() {
   }
 
   return (
-    <>
+    <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
       <div className="mb-6">
           <h1 className="text-2xl font-light mb-2">Discover professionals</h1>
           <p className="text-gray-600">
@@ -184,6 +184,6 @@ export default function DiscoverContent() {
           onClose={() => setSelectedProfile(null)}
         />
       )}
-    </>
+    </div>
   )
 }
