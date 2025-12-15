@@ -9,6 +9,12 @@ interface FeedContentProps {
   userId: string
 }
 
+interface Signal {
+  id: string
+  name: string
+  category_id: string
+}
+
 interface Post {
   id: string
   content: string
@@ -35,6 +41,7 @@ interface Post {
 
 export function FeedContent({ userId }: FeedContentProps) {
   const [posts, setPosts] = useState<Post[]>([])
+  const [userSignals, setUserSignals] = useState<Signal[]>([])
   const [loading, setLoading] = useState(true)
   const [feedType, setFeedType] = useState<'smart' | 'connections'>('smart')
 
@@ -56,7 +63,27 @@ export function FeedContent({ userId }: FeedContentProps) {
     fetchPosts()
   }, [fetchPosts])
 
+  useEffect(() => {
+    // Fetch user signals
+    async function fetchUserSignals() {
+      try {
+        const response = await fetch(`/api/user-signals?userId=${userId}`)
+        if (response.ok) {
+          const data = await response.json()
+          setUserSignals(data.map((us: any) => us.signal))
+        }
+      } catch (error) {
+        console.error('Error fetching user signals:', error)
+      }
+    }
+    fetchUserSignals()
+  }, [userId])
+
   const handlePostCreated = () => {
+    fetchPosts()
+  }
+
+  const handleRefresh = () => {
     fetchPosts()
   }
 
@@ -112,7 +139,13 @@ export function FeedContent({ userId }: FeedContentProps) {
                 </h2>
               </div>
               {relevantPosts.map((post) => (
-                <PostCard key={post.id} post={post} currentUserId={userId} />
+                <PostCard
+                  key={post.id}
+                  post={post}
+                  currentUserId={userId}
+                  userSignals={userSignals}
+                  onRefresh={handleRefresh}
+                />
               ))}
             </div>
           )}
@@ -128,7 +161,13 @@ export function FeedContent({ userId }: FeedContentProps) {
                 </div>
               )}
               {otherPosts.map((post) => (
-                <PostCard key={post.id} post={post} currentUserId={userId} />
+                <PostCard
+                  key={post.id}
+                  post={post}
+                  currentUserId={userId}
+                  userSignals={userSignals}
+                  onRefresh={handleRefresh}
+                />
               ))}
             </div>
           )}
