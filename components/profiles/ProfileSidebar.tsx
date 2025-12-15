@@ -177,28 +177,34 @@ export function ProfileSidebar({ userId, isMobileMenuOpen, onMobileMenuClose }: 
       >
       {/* Logo/Brand */}
       <div className="py-3 px-4 flex items-center justify-between border-b border-gray-800">
-        <Link href="/profile/overview" className="text-white font-light text-lg" prefetch={true}>
-          {isCollapsed ? 'S' : 'Signal'}
-        </Link>
-
-        {/* Toggle Button */}
-        <button
-          onClick={handleToggle}
-          onMouseEnter={() => setIsIconHovered(true)}
-          onMouseLeave={() => setIsIconHovered(false)}
-          className="text-gray-400 hover:text-white transition-colors"
-          title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-        >
-          {isCollapsed ? (
-            isIconHovered ? (
+        {isCollapsed ? (
+          <button
+            onClick={handleToggle}
+            onMouseEnter={() => setIsIconHovered(true)}
+            onMouseLeave={() => setIsIconHovered(false)}
+            className="flex items-center justify-center w-6 h-6 text-white font-light text-lg hover:text-gray-400 transition-colors"
+            title="Expand sidebar"
+          >
+            {isIconHovered ? (
               <ViewColumnsIcon className="w-5 h-5" />
             ) : (
-              <SignalIcon className="w-5 h-5" />
-            )
-          ) : (
-            <ViewColumnsIcon className="w-5 h-5" />
-          )}
-        </button>
+              <span className="text-lg">S</span>
+            )}
+          </button>
+        ) : (
+          <>
+            <Link href="/profile/overview" className="text-white font-light text-lg" prefetch={true}>
+              Signal
+            </Link>
+            <button
+              onClick={handleToggle}
+              className="text-gray-400 hover:text-white transition-colors"
+              title="Collapse sidebar"
+            >
+              <ViewColumnsIcon className="w-5 h-5" />
+            </button>
+          </>
+        )}
       </div>
 
       {/* Navigation Items */}
