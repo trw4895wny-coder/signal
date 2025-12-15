@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { MessageModal } from '@/components/messages/MessageModal'
 import { Avatar } from '@/components/ui/Avatar'
-import { MagnifyingGlassIcon, FunnelIcon, EllipsisHorizontalIcon } from '@heroicons/react/24/outline'
+import { MagnifyingGlassIcon, EllipsisHorizontalIcon } from '@heroicons/react/24/outline'
 
 interface Connection {
   id: string

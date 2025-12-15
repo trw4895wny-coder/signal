@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { CreatePost } from './CreatePost'
 import { PostCard } from './PostCard'
 import { SparklesIcon } from '@heroicons/react/24/outline'
@@ -38,7 +38,7 @@ export function FeedContent({ userId }: FeedContentProps) {
   const [loading, setLoading] = useState(true)
   const [feedType, setFeedType] = useState<'smart' | 'connections'>('smart')
 
-  const fetchPosts = async () => {
+  const fetchPosts = useCallback(async () => {
     try {
       const response = await fetch(`/api/posts?type=${feedType}`)
       if (response.ok) {
@@ -50,11 +50,11 @@ export function FeedContent({ userId }: FeedContentProps) {
     } finally {
       setLoading(false)
     }
-  }
+  }, [feedType])
 
   useEffect(() => {
     fetchPosts()
-  }, [feedType])
+  }, [fetchPosts])
 
   const handlePostCreated = () => {
     fetchPosts()

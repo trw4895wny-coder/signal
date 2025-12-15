@@ -2,8 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import {
-  PhotoIcon,
-  LinkIcon,
   SparklesIcon,
   ClockIcon
 } from '@heroicons/react/24/outline'
