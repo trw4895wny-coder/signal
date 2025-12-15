@@ -2,8 +2,6 @@
 
 import { useEffect, useState } from 'react'
 
-type SidebarMode = 'expanded' | 'collapsed' | 'hover'
-
 interface ProfileLayoutClientProps {
   children: React.ReactNode
 }
@@ -12,19 +10,17 @@ export function ProfileLayoutClient({ children }: ProfileLayoutClientProps) {
   const [sidebarWidth, setSidebarWidth] = useState(240)
 
   useEffect(() => {
-    // Sync with sidebar mode
+    // Sync with sidebar state
     const updateWidth = () => {
-      const mode = (localStorage.getItem('sidebar-mode') || 'expanded') as SidebarMode
-      // For layout margin, collapsed and hover modes both use 64px
-      // (hover expands on hover but the content area stays at 64px margin)
-      const width = mode === 'expanded' ? 240 : 64
+      const isCollapsed = localStorage.getItem('sidebar-collapsed') === 'true'
+      const width = isCollapsed ? 64 : 240
       setSidebarWidth(width)
     }
 
     // Initial check
     updateWidth()
 
-    // Listen for storage changes (when sidebar mode is changed)
+    // Listen for storage changes (when sidebar state is changed)
     const handleStorageChange = () => {
       updateWidth()
     }

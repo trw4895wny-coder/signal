@@ -14,7 +14,6 @@ import {
   Bars3Icon,
   XMarkIcon,
 } from '@heroicons/react/24/outline'
-import { SidebarSettings, type SidebarMode } from './SidebarSettings'
 
 interface ProfileSidebarProps {
   userId: string
@@ -24,29 +23,28 @@ interface ProfileSidebarProps {
 
 export function ProfileSidebar({ userId, isMobileMenuOpen, onMobileMenuClose }: ProfileSidebarProps) {
   const pathname = usePathname()
-  const [sidebarMode, setSidebarMode] = useState<SidebarMode>('expanded')
-  const [isHovering, setIsHovering] = useState(false)
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false)
+  const [isCollapsed, setIsCollapsed] = useState(false)
+  const [isIconHovered, setIsIconHovered] = useState(false)
   const [pendingCount, setPendingCount] = useState(0)
   const [unreadMessagesCount, setUnreadMessagesCount] = useState(0)
   const [mounted, setMounted] = useState(false)
 
-  // Load sidebar mode from localStorage after mount
+  // Load sidebar state from localStorage after mount
   useEffect(() => {
-    const saved = localStorage.getItem('sidebar-mode') as SidebarMode
-    if (saved && ['expanded', 'collapsed', 'hover'].includes(saved)) {
-      setSidebarMode(saved)
+    const saved = localStorage.getItem('sidebar-collapsed')
+    if (saved === 'true') {
+      setIsCollapsed(true)
     }
     setMounted(true)
   }, [])
 
-  // Handle mode change
-  const handleModeChange = (mode: SidebarMode) => {
-    setSidebarMode(mode)
-    localStorage.setItem('sidebar-mode', mode)
+  // Handle toggle
+  const handleToggle = () => {
+    const newState = !isCollapsed
+    setIsCollapsed(newState)
+    localStorage.setItem('sidebar-collapsed', String(newState))
     // Dispatch custom event for layout to respond
     window.dispatchEvent(new Event('sidebar-toggle'))
-    setIsSettingsOpen(false)
   }
 
   useEffect(() => {
@@ -104,13 +102,8 @@ export function ProfileSidebar({ userId, isMobileMenuOpen, onMobileMenuClose }: 
     }
   }, [userId])
 
-  // Calculate if sidebar should be visually collapsed
-  const isVisuallyCollapsed =
-    sidebarMode === 'collapsed' ||
-    (sidebarMode === 'hover' && !isHovering)
-
   // Calculate sidebar width
-  const sidebarWidth = isVisuallyCollapsed ? 64 : 240
+  const sidebarWidth = isCollapsed ? 64 : 240
 
   const menuItems = [
     {
@@ -181,33 +174,31 @@ export function ProfileSidebar({ userId, isMobileMenuOpen, onMobileMenuClose }: 
           ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
         `}
         style={{ width: `${sidebarWidth}px` }}
-        onMouseEnter={() => sidebarMode === 'hover' && setIsHovering(true)}
-        onMouseLeave={() => sidebarMode === 'hover' && setIsHovering(false)}
       >
       {/* Logo/Brand */}
       <div className="py-3 px-4 flex items-center justify-between border-b border-gray-800">
         <Link href="/profile/overview" className="text-white font-light text-lg" prefetch={true}>
-          {isVisuallyCollapsed ? 'S' : 'Signal'}
+          {isCollapsed ? 'S' : 'Signal'}
         </Link>
 
-        {/* Settings Button */}
-        <div className="relative">
-          <button
-            onClick={() => setIsSettingsOpen(true)}
-            className="text-gray-400 hover:text-white transition-colors"
-            title="Sidebar settings"
-          >
+        {/* Toggle Button */}
+        <button
+          onClick={handleToggle}
+          onMouseEnter={() => setIsIconHovered(true)}
+          onMouseLeave={() => setIsIconHovered(false)}
+          className="text-gray-400 hover:text-white transition-colors"
+          title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+        >
+          {isCollapsed ? (
+            isIconHovered ? (
+              <ViewColumnsIcon className="w-5 h-5" />
+            ) : (
+              <SignalIcon className="w-5 h-5" />
+            )
+          ) : (
             <ViewColumnsIcon className="w-5 h-5" />
-          </button>
-
-          {/* Settings Popover */}
-          <SidebarSettings
-            isOpen={isSettingsOpen}
-            currentMode={sidebarMode}
-            onModeChange={handleModeChange}
-            onClose={() => setIsSettingsOpen(false)}
-          />
-        </div>
+          )}
+        </button>
       </div>
 
       {/* Navigation Items */}
@@ -229,18 +220,18 @@ export function ProfileSidebar({ userId, isMobileMenuOpen, onMobileMenuClose }: 
                     : 'text-gray-400 hover:bg-gray-800 hover:text-gray-300'
                 }
               `}
-              title={isVisuallyCollapsed ? item.name : undefined}
+              title={isCollapsed ? item.name : undefined}
             >
               <div className="relative flex-shrink-0">
                 <Icon className="w-5 h-5" />
                 {/* Badge dot when collapsed */}
-                {isVisuallyCollapsed && item.badge !== null && (
+                {isCollapsed && item.badge !== null && (
                   <span className="absolute -top-1 -right-1 w-2 h-2 bg-blue-600 rounded-full" />
                 )}
               </div>
 
               {/* Text and badge when expanded */}
-              {!isVisuallyCollapsed && (
+              {!isCollapsed && (
                 <>
                   <span className="text-sm font-medium">{item.name}</span>
                   {item.badge !== null && (
@@ -252,7 +243,7 @@ export function ProfileSidebar({ userId, isMobileMenuOpen, onMobileMenuClose }: 
               )}
 
               {/* Tooltip when collapsed */}
-              {isVisuallyCollapsed && (
+              {isCollapsed && (
                 <div className="absolute left-full ml-2 px-2 py-1 bg-gray-800 text-white text-sm rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-50">
                   {item.name}
                   {item.badge !== null && (
