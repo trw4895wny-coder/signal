@@ -67,7 +67,7 @@ export function SidebarSettings({ isOpen, currentMode, onModeChange, onClose }: 
   return (
     <div
       ref={panelRef}
-      className="absolute bottom-full left-0 mb-2 ml-2 w-48 bg-black rounded-lg shadow-2xl border border-gray-800 animate-in fade-in slide-in-from-bottom-2 duration-200"
+      className="absolute top-full right-0 mt-2 w-48 bg-black rounded-lg shadow-2xl border border-gray-800 animate-in fade-in slide-in-from-top-2 duration-200"
     >
       {/* Header */}
       <div className="px-3 py-2 border-b border-gray-800">

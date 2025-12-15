@@ -10,7 +10,7 @@ import {
   UserGroupIcon,
   ChatBubbleLeftRightIcon,
   ChartBarIcon,
-  Cog6ToothIcon,
+  ViewColumnsIcon,
   Bars3Icon,
   XMarkIcon,
 } from '@heroicons/react/24/outline'
@@ -185,10 +185,29 @@ export function ProfileSidebar({ userId, isMobileMenuOpen, onMobileMenuClose }: 
         onMouseLeave={() => sidebarMode === 'hover' && setIsHovering(false)}
       >
       {/* Logo/Brand */}
-      <div className="py-3 flex items-center justify-center border-b border-gray-800">
+      <div className="py-3 px-4 flex items-center justify-between border-b border-gray-800">
         <Link href="/profile/overview" className="text-white font-light text-lg" prefetch={true}>
           {isVisuallyCollapsed ? 'S' : 'Signal'}
         </Link>
+
+        {/* Settings Button */}
+        <div className="relative">
+          <button
+            onClick={() => setIsSettingsOpen(true)}
+            className="text-gray-400 hover:text-white transition-colors"
+            title="Sidebar settings"
+          >
+            <ViewColumnsIcon className="w-5 h-5" />
+          </button>
+
+          {/* Settings Popover */}
+          <SidebarSettings
+            isOpen={isSettingsOpen}
+            currentMode={sidebarMode}
+            onModeChange={handleModeChange}
+            onClose={() => setIsSettingsOpen(false)}
+          />
+        </div>
       </div>
 
       {/* Navigation Items */}
@@ -247,26 +266,6 @@ export function ProfileSidebar({ userId, isMobileMenuOpen, onMobileMenuClose }: 
           )
         })}
       </nav>
-
-      {/* Settings Button */}
-      <div className="relative border-t border-gray-800 p-4">
-        {/* Settings Popover */}
-        <SidebarSettings
-          isOpen={isSettingsOpen}
-          currentMode={sidebarMode}
-          onModeChange={handleModeChange}
-          onClose={() => setIsSettingsOpen(false)}
-        />
-
-        <button
-          onClick={() => setIsSettingsOpen(true)}
-          className="w-full flex items-center justify-center gap-2 px-3 py-2 text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition-colors"
-          title="Sidebar settings"
-        >
-          <Cog6ToothIcon className="w-5 h-5" />
-          {!isVisuallyCollapsed && <span className="text-sm">Settings</span>}
-        </button>
-      </div>
     </div>
     </>
   )
