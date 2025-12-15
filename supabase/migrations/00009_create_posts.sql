@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS posts (
 CREATE TABLE IF NOT EXISTS post_signals (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   post_id UUID REFERENCES posts(id) ON DELETE CASCADE NOT NULL,
-  signal_id UUID REFERENCES signals(id) ON DELETE CASCADE NOT NULL,
+  signal_id TEXT REFERENCES signals(id) ON DELETE CASCADE NOT NULL,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   UNIQUE(post_id, signal_id)
 );
