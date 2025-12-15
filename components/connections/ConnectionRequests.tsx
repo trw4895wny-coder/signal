@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { MessageModal } from '@/components/messages/MessageModal'
 import { Avatar } from '@/components/ui/Avatar'
+import { MagnifyingGlassIcon, FunnelIcon, EllipsisHorizontalIcon } from '@heroicons/react/24/outline'
 
 interface Connection {
   id: string
@@ -30,6 +31,9 @@ export function ConnectionRequests({ userId }: { userId: string }) {
   const [processingId, setProcessingId] = useState<string | null>(null)
   const [messageConnection, setMessageConnection] = useState<Connection | null>(null)
   const [connectionToRemove, setConnectionToRemove] = useState<string | null>(null)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [sortBy, setSortBy] = useState<'recent' | 'name'>('recent')
+  const [openMenuId, setOpenMenuId] = useState<string | null>(null)
 
   useEffect(() => {
     fetchConnections()
@@ -93,7 +97,33 @@ export function ConnectionRequests({ userId }: { userId: string }) {
   const sentRequests = connections.filter(
     (c) => c.status === 'pending' && c.requester_id === userId
   )
-  const acceptedConnections = connections.filter((c) => c.status === 'accepted')
+
+  // Filter and sort accepted connections
+  let acceptedConnections = connections.filter((c) => c.status === 'accepted')
+
+  // Apply search filter
+  if (searchQuery) {
+    acceptedConnections = acceptedConnections.filter((connection) => {
+      const otherUser = connection.requester_id === userId ? connection.receiver : connection.requester
+      const name = otherUser.full_name || otherUser.email
+      return name.toLowerCase().includes(searchQuery.toLowerCase())
+    })
+  }
+
+  // Apply sorting
+  acceptedConnections = [...acceptedConnections].sort((a, b) => {
+    const userA = a.requester_id === userId ? a.receiver : a.requester
+    const userB = b.requester_id === userId ? b.receiver : b.requester
+
+    if (sortBy === 'name') {
+      const nameA = userA.full_name || userA.email
+      const nameB = userB.full_name || userB.email
+      return nameA.localeCompare(nameB)
+    } else {
+      // Sort by recent (created_at descending)
+      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    }
+  })
 
   if (loading) {
     return (
@@ -169,61 +199,129 @@ export function ConnectionRequests({ userId }: { userId: string }) {
       )}
 
       {/* Accepted Connections */}
-      {acceptedConnections.length > 0 && (
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-medium text-gray-900">Your Connections</h2>
-              <span className="px-2.5 py-1 rounded-full bg-gray-100 text-gray-700 text-xs font-semibold">
-                {acceptedConnections.length}
-              </span>
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+        {/* Header with Search/Sort/Filter */}
+        <div className="px-6 py-4 border-b border-gray-200">
+          <h2 className="text-2xl font-light text-gray-900 mb-4">
+            {acceptedConnections.length} Connection{acceptedConnections.length !== 1 ? 's' : ''}
+          </h2>
+
+          <div className="flex items-center justify-between gap-4">
+            {/* Sort dropdown */}
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-600">Sort by:</span>
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as 'recent' | 'name')}
+                className="text-sm font-medium text-gray-900 border-none bg-transparent focus:ring-0 cursor-pointer"
+              >
+                <option value="recent">Recently added</option>
+                <option value="name">Name</option>
+              </select>
             </div>
-          </div>
-          <div className="p-4">
-            <div className="space-y-3">
-              {acceptedConnections.map((connection) => {
-                const otherUser =
-                  connection.requester_id === userId
-                    ? connection.receiver
-                    : connection.requester
-                return (
-                  <div
-                    key={connection.id}
-                    className="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:border-gray-300 hover:shadow-sm transition-all"
-                  >
-                    <Avatar
-                      src={otherUser.avatar_url}
-                      alt={otherUser.full_name || 'User'}
-                      fallbackText={otherUser.full_name || otherUser.email}
-                      size="md"
-                    />
-                    <div className="flex-1 min-w-0">
-                      <p className="font-medium text-gray-900 truncate">
-                        {otherUser.full_name || 'Anonymous'}
-                      </p>
-                      <p className="text-sm text-gray-600 truncate">{otherUser.email}</p>
-                    </div>
-                    <div className="flex items-center gap-2 flex-shrink-0">
-                      <button
-                        onClick={() => setMessageConnection(connection)}
-                        className="px-3 py-1.5 rounded-lg bg-gray-900 text-white text-sm font-medium hover:bg-gray-800 transition-colors"
-                      >
-                        Message
-                      </button>
-                      <button
-                        onClick={() => setConnectionToRemove(connection.id)}
-                        className="px-3 py-1.5 rounded-lg border border-red-300 text-red-600 text-sm font-medium hover:bg-red-50 transition-colors"
-                      >
-                        Remove
-                      </button>
-                    </div>
-                  </div>
-                )
-              })}
+
+            {/* Search and Filter */}
+            <div className="flex items-center gap-3">
+              <div className="relative">
+                <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="Search by name"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-gray-900 focus:border-transparent"
+                />
+              </div>
+              <button className="text-sm font-medium text-blue-600 hover:text-blue-700">
+                Search with filters
+              </button>
             </div>
           </div>
         </div>
-      )}
+
+        {/* Connections List */}
+        {acceptedConnections.length > 0 ? (
+          <div className="divide-y divide-gray-200">
+            {acceptedConnections.map((connection) => {
+              const otherUser =
+                connection.requester_id === userId
+                  ? connection.receiver
+                  : connection.requester
+              const isMenuOpen = openMenuId === connection.id
+
+              return (
+                <div
+                  key={connection.id}
+                  className="flex items-start gap-3 px-6 py-4 hover:bg-gray-50 transition-colors"
+                >
+                  <Avatar
+                    src={otherUser.avatar_url}
+                    alt={otherUser.full_name || 'User'}
+                    fallbackText={otherUser.full_name || otherUser.email}
+                    size="lg"
+                  />
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-medium text-gray-900">
+                      {otherUser.full_name || 'Anonymous'}
+                    </h3>
+                    <p className="text-sm text-gray-600 line-clamp-2">{otherUser.email}</p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      Connected {new Date(connection.created_at).toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        year: new Date(connection.created_at).getFullYear() !== new Date().getFullYear() ? 'numeric' : undefined
+                      })}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2 flex-shrink-0">
+                    <button
+                      onClick={() => setMessageConnection(connection)}
+                      className="px-4 py-2 rounded-full border-2 border-blue-600 text-blue-600 text-sm font-medium hover:bg-blue-50 transition-colors"
+                    >
+                      Message
+                    </button>
+                    <div className="relative">
+                      <button
+                        onClick={() => setOpenMenuId(isMenuOpen ? null : connection.id)}
+                        className="p-2 hover:bg-gray-200 rounded-full transition-colors"
+                      >
+                        <EllipsisHorizontalIcon className="w-5 h-5 text-gray-600" />
+                      </button>
+
+                      {/* Dropdown Menu */}
+                      {isMenuOpen && (
+                        <>
+                          <div
+                            className="fixed inset-0 z-10"
+                            onClick={() => setOpenMenuId(null)}
+                          />
+                          <div className="absolute right-0 top-full mt-1 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-20">
+                            <button
+                              onClick={() => {
+                                setConnectionToRemove(connection.id)
+                                setOpenMenuId(null)
+                              }}
+                              className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                            >
+                              Remove connection
+                            </button>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        ) : (
+          <div className="px-6 py-12 text-center">
+            <p className="text-gray-600">
+              {searchQuery ? 'No connections match your search' : 'No connections yet'}
+            </p>
+          </div>
+        )}
+      </div>
 
       {/* Sent Requests */}
       {sentRequests.length > 0 && (
