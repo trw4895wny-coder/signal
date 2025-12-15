@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
+import { Avatar } from '@/components/ui/Avatar'
 
 interface Message {
   id: string
@@ -219,17 +220,12 @@ export function MessageThread({
           href={`/profile/overview`}
           className="flex items-center gap-3 hover:opacity-80 transition-opacity"
         >
-          <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-900 text-white flex items-center justify-center font-medium">
-            {otherUser.avatar_url ? (
-              <img
-                src={`${otherUser.avatar_url}?t=${Date.now()}`}
-                alt={otherUser.full_name || 'User'}
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <span>{getInitials()}</span>
-            )}
-          </div>
+          <Avatar
+            src={otherUser.avatar_url}
+            alt={otherUser.full_name || 'User'}
+            fallbackText={otherUser.full_name || otherUser.email}
+            size="md"
+          />
           <div>
             <h2 className="font-medium text-gray-900">
               {otherUser.full_name || 'Anonymous'}

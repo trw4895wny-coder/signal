@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { Avatar } from '@/components/ui/Avatar'
 
 interface Conversation {
   connection_id: string
@@ -185,17 +186,12 @@ export function ConversationList({
               >
                 {/* Avatar */}
                 <div className="relative flex-shrink-0">
-                  <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-900 text-white flex items-center justify-center font-medium">
-                    {conversation.other_user.avatar_url ? (
-                      <img
-                        src={`${conversation.other_user.avatar_url}?t=${Date.now()}`}
-                        alt={conversation.other_user.full_name || 'User'}
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <span>{getInitials(conversation.other_user)}</span>
-                    )}
-                  </div>
+                  <Avatar
+                    src={conversation.other_user.avatar_url}
+                    alt={conversation.other_user.full_name || 'User'}
+                    fallbackText={conversation.other_user.full_name || conversation.other_user.email}
+                    size="lg"
+                  />
                   {isUnread && (
                     <div className="absolute -top-1 -right-1 w-3 h-3 bg-blue-600 rounded-full border-2 border-white" />
                   )}

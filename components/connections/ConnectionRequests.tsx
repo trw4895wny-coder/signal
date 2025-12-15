@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { MessageModal } from '@/components/messages/MessageModal'
+import { Avatar } from '@/components/ui/Avatar'
 
 interface Connection {
   id: string
@@ -125,9 +126,12 @@ export function ConnectionRequests({ userId }: { userId: string }) {
               >
                 <div className="flex-1">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-gray-900 text-white flex items-center justify-center font-medium">
-                      {(connection.requester.full_name || connection.requester.email)[0].toUpperCase()}
-                    </div>
+                    <Avatar
+                      src={connection.requester.avatar_url}
+                      alt={connection.requester.full_name || 'User'}
+                      fallbackText={connection.requester.full_name || connection.requester.email}
+                      size="md"
+                    />
                     <div>
                       <p className="font-medium text-gray-900">
                         {connection.requester.full_name || 'Anonymous'}
@@ -187,9 +191,12 @@ export function ConnectionRequests({ userId }: { userId: string }) {
                     key={connection.id}
                     className="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:border-gray-300 hover:shadow-sm transition-all"
                   >
-                    <div className="w-10 h-10 rounded-full bg-gray-900 text-white flex items-center justify-center font-medium flex-shrink-0">
-                      {(otherUser.full_name || otherUser.email)[0].toUpperCase()}
-                    </div>
+                    <Avatar
+                      src={otherUser.avatar_url}
+                      alt={otherUser.full_name || 'User'}
+                      fallbackText={otherUser.full_name || otherUser.email}
+                      size="md"
+                    />
                     <div className="flex-1 min-w-0">
                       <p className="font-medium text-gray-900 truncate">
                         {otherUser.full_name || 'Anonymous'}
@@ -236,9 +243,12 @@ export function ConnectionRequests({ userId }: { userId: string }) {
                 className="flex items-center justify-between p-4 border border-gray-200 rounded-lg"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center font-medium">
-                    {(connection.receiver.full_name || connection.receiver.email)[0].toUpperCase()}
-                  </div>
+                  <Avatar
+                    src={connection.receiver.avatar_url}
+                    alt={connection.receiver.full_name || 'User'}
+                    fallbackText={connection.receiver.full_name || connection.receiver.email}
+                    size="md"
+                  />
                   <div>
                     <p className="font-medium text-gray-900">
                       {connection.receiver.full_name || 'Anonymous'}

@@ -18,8 +18,8 @@ export async function GET() {
     .from('connections')
     .select(`
       *,
-      requester:requester_id(id, email, full_name),
-      receiver:receiver_id(id, email, full_name)
+      requester:requester_id(id, email, full_name, avatar_url),
+      receiver:receiver_id(id, email, full_name, avatar_url)
     `)
     .or(`requester_id.eq.${user.id},receiver_id.eq.${user.id}`)
     .order('created_at', { ascending: false })

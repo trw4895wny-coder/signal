@@ -1,5 +1,6 @@
 import type { ProfileWithSignals } from '@/types/signals'
 import { getDaysUntilExpiration } from '@/types/signals'
+import { Avatar } from '@/components/ui/Avatar'
 
 interface ProfileCardProps {
   profile: ProfileWithSignals
@@ -39,17 +40,12 @@ export function ProfileCard({ profile, onClick }: ProfileCardProps) {
     >
       <div className="flex items-start gap-4 mb-4">
         {/* Avatar */}
-        <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-900 text-white flex items-center justify-center font-medium flex-shrink-0">
-          {profile.avatar_url ? (
-            <img
-              src={profile.avatar_url}
-              alt={profile.full_name || 'Profile'}
-              className="w-full h-full object-cover"
-            />
-          ) : (
-            <span>{getInitials()}</span>
-          )}
-        </div>
+        <Avatar
+          src={profile.avatar_url}
+          alt={profile.full_name || 'Profile'}
+          fallbackText={profile.full_name || profile.email || 'User'}
+          size="lg"
+        />
 
         <div className="flex-1 min-w-0">
           <h3 className="text-lg font-medium text-gray-900 truncate">
