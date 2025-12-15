@@ -186,7 +186,7 @@ export function ProfileSidebar({ userId, isMobileMenuOpen, onMobileMenuClose }: 
       >
       {/* Logo/Brand */}
       <div className="py-3 flex items-center justify-center border-b border-gray-800">
-        <Link href="/" className="text-white font-light text-lg">
+        <Link href="/profile/overview" className="text-white font-light text-lg" prefetch={true}>
           {isVisuallyCollapsed ? 'S' : 'Signal'}
         </Link>
       </div>
