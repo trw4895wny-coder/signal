@@ -34,7 +34,7 @@ interface PostCardProps {
   currentUserId: string
 }
 
-export function PostCard({ post, currentUserId }: PostCardProps) {
+export function PostCard({ post }: PostCardProps) {
   const postTypeColors = {
     update: 'bg-blue-50 text-blue-700 border-blue-200',
     help_request: 'bg-orange-50 text-orange-700 border-orange-200',

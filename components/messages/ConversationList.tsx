@@ -73,13 +73,6 @@ export function ConversationList({
     return name.toLowerCase().includes(searchQuery.toLowerCase())
   })
 
-  const getInitials = (user: Conversation['other_user']) => {
-    if (user.full_name) {
-      return user.full_name[0].toUpperCase()
-    }
-    return user.email[0].toUpperCase()
-  }
-
   const getRelativeTime = (dateString: string) => {
     const date = new Date(dateString)
     const now = new Date()

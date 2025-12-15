@@ -11,8 +11,6 @@ import {
   ChatBubbleLeftRightIcon,
   ChartBarIcon,
   ViewColumnsIcon,
-  Bars3Icon,
-  XMarkIcon,
   NewspaperIcon,
 } from '@heroicons/react/24/outline'
 

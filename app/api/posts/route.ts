@@ -85,7 +85,13 @@ export async function GET(request: Request) {
     if (error) throw error
 
     // Smart matching algorithm
-    const scoredPosts = allPosts.map((post: any) => {
+    interface ScoredPost {
+      [key: string]: any
+      match_score: number
+      match_reason: string
+    }
+
+    const scoredPosts = allPosts.map((post: any): ScoredPost => {
       let score = 0
       let matchReason = ''
 
@@ -124,7 +130,7 @@ export async function GET(request: Request) {
     })
 
     // Sort by match score
-    scoredPosts.sort((a, b) => b.match_score - a.match_score)
+    scoredPosts.sort((a: ScoredPost, b: ScoredPost) => b.match_score - a.match_score)
 
     // Filter based on feed type
     let filteredPosts = scoredPosts
