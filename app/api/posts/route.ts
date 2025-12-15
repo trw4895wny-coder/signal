@@ -135,7 +135,7 @@ export async function GET(request: Request) {
     // Filter based on feed type
     let filteredPosts = scoredPosts
     if (feedType === 'connections') {
-      filteredPosts = scoredPosts.filter(p => connectionUserIds.includes(p.user_id))
+      filteredPosts = scoredPosts.filter((p: ScoredPost) => connectionUserIds.includes(p.user_id))
     }
 
     return NextResponse.json(filteredPosts.slice(0, 50))

@@ -19,7 +19,7 @@ interface ProfileOverviewProps {
 
 export function ProfileOverview({ userId, profile }: ProfileOverviewProps) {
   const [isEditingProfile, setIsEditingProfile] = useState(false)
-  const [currentProfile, setCurrentProfile] = useState(profile)
+  const [currentProfile] = useState(profile)
   const [avatarKey, setAvatarKey] = useState(Date.now())
   const [connectionStats, setConnectionStats] = useState({
     total: 0,
