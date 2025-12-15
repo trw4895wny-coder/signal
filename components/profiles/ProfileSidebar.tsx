@@ -13,6 +13,7 @@ import {
   ViewColumnsIcon,
   Bars3Icon,
   XMarkIcon,
+  NewspaperIcon,
 } from '@heroicons/react/24/outline'
 
 interface ProfileSidebarProps {
@@ -116,6 +117,12 @@ export function ProfileSidebar({ userId, isMobileMenuOpen, onMobileMenuClose }: 
       name: 'Signals',
       href: '/profile/signals',
       icon: SignalIcon,
+      badge: null,
+    },
+    {
+      name: 'Feed',
+      href: '/profile/feed',
+      icon: NewspaperIcon,
       badge: null,
     },
     {
