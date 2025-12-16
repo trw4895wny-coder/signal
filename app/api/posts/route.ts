@@ -216,7 +216,15 @@ export async function POST(request: Request) {
       .from('profiles')
       .select('city, state, country, latitude, longitude')
       .eq('id', user.id)
-      .single()
+      .single() as {
+      data: {
+        city: string | null
+        state: string | null
+        country: string | null
+        latitude: number | null
+        longitude: number | null
+      } | null
+    }
 
     // Calculate expiration
     let expires_at = null
