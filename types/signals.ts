@@ -20,6 +20,11 @@ export interface ProfileWithSignals extends Profile {
   location?: string | null
   website?: string | null
   avatar_url?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  latitude?: number | null
+  longitude?: number | null
 }
 
 // Constraint constants from design doc
