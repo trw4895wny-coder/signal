@@ -87,7 +87,7 @@ export function LocationAutocomplete({
 
         // Only include results that are cities, towns, villages, or administrative areas
         const validTypes = ['city', 'town', 'village', 'administrative', 'municipality']
-        return validTypes.includes(type) || addressType
+        return (type && validTypes.includes(type)) || addressType
       })
 
       setSuggestions(cityLevelResults.slice(0, 5))
