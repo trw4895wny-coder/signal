@@ -20,7 +20,7 @@ export async function GET(request: Request) {
 
   try {
     // Get user's profile for location filtering
-    let userProfile = null
+    let userProfile: { latitude: number; longitude: number } | null = null
     if (distanceParam) {
       const { data: profile } = await supabase
         .from('profiles')
