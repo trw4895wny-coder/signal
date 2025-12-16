@@ -5,13 +5,11 @@ import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import {
   HomeIcon,
-  SignalIcon,
   MagnifyingGlassIcon,
   UserGroupIcon,
   ChatBubbleLeftRightIcon,
   ChartBarIcon,
   ViewColumnsIcon,
-  NewspaperIcon,
 } from '@heroicons/react/24/outline'
 
 interface ProfileSidebarProps {
@@ -106,21 +104,9 @@ export function ProfileSidebar({ userId, isMobileMenuOpen, onMobileMenuClose }: 
 
   const menuItems = [
     {
-      name: 'Overview',
+      name: 'Home',
       href: '/profile/overview',
       icon: HomeIcon,
-      badge: null,
-    },
-    {
-      name: 'Signals',
-      href: '/profile/signals',
-      icon: SignalIcon,
-      badge: null,
-    },
-    {
-      name: 'Feed',
-      href: '/profile/feed',
-      icon: NewspaperIcon,
       badge: null,
     },
     {
