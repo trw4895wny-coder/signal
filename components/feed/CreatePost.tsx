@@ -21,7 +21,7 @@ export function CreatePost({ userId, onPostCreated }: CreatePostProps) {
   const [content, setContent] = useState('')
   const [postType, setPostType] = useState<'update' | 'help_request' | 'offering_help' | 'project' | 'collaboration'>('update')
   const [selectedSignals, setSelectedSignals] = useState<string[]>([])
-  const [expiresIn, setExpiresIn] = useState<number>(0) // 0 = never
+  const [expiresIn, setExpiresIn] = useState<number>(7) // Default to 7 days
   const [loading, setLoading] = useState(false)
   const [userSignals, setUserSignals] = useState<Signal[]>([])
   const [showOptions, setShowOptions] = useState(false)
@@ -62,7 +62,7 @@ export function CreatePost({ userId, onPostCreated }: CreatePostProps) {
       if (response.ok) {
         setContent('')
         setSelectedSignals([])
-        setExpiresIn(0)
+        setExpiresIn(7)
         setShowOptions(false)
         onPostCreated()
       }
@@ -166,11 +166,9 @@ export function CreatePost({ userId, onPostCreated }: CreatePostProps) {
                 onChange={(e) => setExpiresIn(Number(e.target.value))}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
               >
-                <option value={0}>Never expires</option>
+                <option value={1}>1 day</option>
                 <option value={7}>7 days</option>
-                <option value={14}>14 days</option>
                 <option value={30}>30 days</option>
-                <option value={90}>90 days</option>
               </select>
             </div>
           </div>

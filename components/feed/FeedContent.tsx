@@ -5,7 +5,8 @@ import { CreatePost } from './CreatePost'
 import { PostCard } from './PostCard'
 import { FloatingActionButton } from './FloatingActionButton'
 import { QuickPostTemplates } from './QuickPostTemplates'
-import { SparklesIcon } from '@heroicons/react/24/outline'
+import { LocationFilterModal } from './LocationFilterModal'
+import { SparklesIcon, FunnelIcon } from '@heroicons/react/24/outline'
 
 interface FeedContentProps {
   userId: string
@@ -48,10 +49,17 @@ export function FeedContent({ userId }: FeedContentProps) {
   const [loading, setLoading] = useState(true)
   const [feedType, setFeedType] = useState<'smart' | 'connections'>('smart')
   const [showQuickPost, setShowQuickPost] = useState(false)
+  const [showLocationFilter, setShowLocationFilter] = useState(false)
+  const [locationDistance, setLocationDistance] = useState<number | null>(null)
 
   const fetchPosts = useCallback(async () => {
+    setLoading(true)
     try {
-      const response = await fetch(`/api/posts?type=${feedType}`)
+      let url = `/api/posts?type=${feedType}`
+      if (locationDistance !== null) {
+        url += `&distance=${locationDistance}`
+      }
+      const response = await fetch(url)
       if (response.ok) {
         const data = await response.json()
         setPosts(data)
@@ -61,7 +69,7 @@ export function FeedContent({ userId }: FeedContentProps) {
     } finally {
       setLoading(false)
     }
-  }, [feedType])
+  }, [feedType, locationDistance])
 
   useEffect(() => {
     fetchPosts()
@@ -111,27 +119,42 @@ export function FeedContent({ userId }: FeedContentProps) {
 
       {/* Feed Type Toggle */}
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => setFeedType('smart')}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                feedType === 'smart'
+                  ? 'bg-gray-900 text-white'
+                  : 'text-gray-600 hover:bg-gray-100'
+              }`}
+            >
+              <SparklesIcon className="w-4 h-4 inline mr-2" />
+              Smart Feed
+            </button>
+            <button
+              onClick={() => setFeedType('connections')}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                feedType === 'connections'
+                  ? 'bg-gray-900 text-white'
+                  : 'text-gray-600 hover:bg-gray-100'
+              }`}
+            >
+              Connections
+            </button>
+          </div>
+
+          {/* Location Filter Button */}
           <button
-            onClick={() => setFeedType('smart')}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-              feedType === 'smart'
-                ? 'bg-gray-900 text-white'
-                : 'text-gray-600 hover:bg-gray-100'
+            onClick={() => setShowLocationFilter(true)}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 ${
+              locationDistance !== null
+                ? 'bg-blue-100 text-blue-700 border border-blue-300'
+                : 'text-gray-600 hover:bg-gray-100 border border-gray-200'
             }`}
           >
-            <SparklesIcon className="w-4 h-4 inline mr-2" />
-            Smart Feed
-          </button>
-          <button
-            onClick={() => setFeedType('connections')}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-              feedType === 'connections'
-                ? 'bg-gray-900 text-white'
-                : 'text-gray-600 hover:bg-gray-100'
-            }`}
-          >
-            Connections
+            <FunnelIcon className="w-4 h-4" />
+            {locationDistance ? `${locationDistance} mi` : 'Location'}
           </button>
         </div>
       </div>
@@ -211,6 +234,19 @@ export function FeedContent({ userId }: FeedContentProps) {
           userProfile={userProfile}
           onClose={() => setShowQuickPost(false)}
           onPostCreated={handlePostCreated}
+        />
+      )}
+
+      {/* Location Filter Modal */}
+      {showLocationFilter && userProfile && (
+        <LocationFilterModal
+          userLocation={{
+            city: userProfile.city,
+            state: userProfile.state
+          }}
+          currentDistance={locationDistance}
+          onApply={setLocationDistance}
+          onClose={() => setShowLocationFilter(false)}
         />
       )}
     </div>

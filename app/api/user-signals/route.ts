@@ -19,7 +19,7 @@ export async function GET(request: Request) {
         *,
         signal:signal_id(
           id,
-          name,
+          label,
           category_id,
           category:category_id(name)
         )

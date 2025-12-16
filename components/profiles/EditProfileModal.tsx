@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 import { AvatarUpload } from './AvatarUpload'
+import { SignalChipEditor } from '@/components/signals/SignalChipEditor'
+import { LocationAutocomplete } from './LocationAutocomplete'
 import { createClient } from '@/lib/supabase/client'
 
 interface EditProfileModalProps {
@@ -11,9 +13,16 @@ interface EditProfileModalProps {
     headline?: string | null
     bio?: string | null
     location?: string | null
+    city?: string | null
+    state?: string | null
+    latitude?: number | null
+    longitude?: number | null
     website?: string | null
     avatar_url?: string | null
   }
+  userSignals?: any[]
+  categories?: any[]
+  signalsByCategory?: Record<string, any[]>
   onClose: () => void
   onSave: () => void
 }
@@ -21,16 +30,52 @@ interface EditProfileModalProps {
 export function EditProfileModal({
   userId,
   currentProfile,
+  userSignals = [],
+  categories = [],
+  signalsByCategory = {},
   onClose,
   onSave,
 }: EditProfileModalProps) {
+  // Format initial location display
+  const getInitialLocationDisplay = () => {
+    if (currentProfile.city && currentProfile.state) {
+      return `${currentProfile.city}, ${currentProfile.state}, US`
+    }
+    if (currentProfile.location) {
+      return currentProfile.location
+    }
+    return ''
+  }
+
   const [fullName, setFullName] = useState(currentProfile.full_name || '')
   const [headline, setHeadline] = useState(currentProfile.headline || '')
   const [bio, setBio] = useState(currentProfile.bio || '')
-  const [location, setLocation] = useState(currentProfile.location || '')
+  const [locationDisplay, setLocationDisplay] = useState(getInitialLocationDisplay())
+  const [city, setCity] = useState(currentProfile.city || '')
+  const [state, setState] = useState(currentProfile.state || '')
+  const [country, setCountry] = useState('United States')
+  const [latitude, setLatitude] = useState<number | null>(currentProfile.latitude || null)
+  const [longitude, setLongitude] = useState<number | null>(currentProfile.longitude || null)
   const [website, setWebsite] = useState(currentProfile.website || '')
   const [avatarUrl, setAvatarUrl] = useState(currentProfile.avatar_url || null)
   const [saving, setSaving] = useState(false)
+  const [gettingLocation, setGettingLocation] = useState(false)
+
+  const handleLocationChange = (location: {
+    displayText: string
+    city: string
+    state: string
+    country: string
+    latitude: number
+    longitude: number
+  }) => {
+    setLocationDisplay(location.displayText)
+    setCity(location.city)
+    setState(location.state)
+    setCountry(location.country)
+    setLatitude(location.latitude)
+    setLongitude(location.longitude)
+  }
 
   const handleSave = async () => {
     setSaving(true)
@@ -43,8 +88,13 @@ export function EditProfileModal({
           full_name: fullName || null,
           headline: headline || null,
           bio: bio || null,
-          location: location || null,
+          city: city || null,
+          state: state || null,
+          country: country || 'United States',
+          latitude: latitude,
+          longitude: longitude,
           website: website || null,
+          location_updated_at: new Date().toISOString(),
         })
         .eq('id', userId)
 
@@ -153,17 +203,19 @@ export function EditProfileModal({
 
           {/* Location */}
           <div>
-            <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
               Location
             </label>
-            <input
-              type="text"
-              id="location"
-              value={location}
-              onChange={(e) => setLocation(e.target.value.slice(0, 50))}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent"
-              placeholder="San Francisco, CA"
+            <LocationAutocomplete
+              value={locationDisplay}
+              onChange={handleLocationChange}
+              onGettingLocation={setGettingLocation}
             />
+            {latitude && longitude && (
+              <p className="text-xs text-green-600 mt-2">
+                ✓ Location set with coordinates
+              </p>
+            )}
           </div>
 
           {/* Website */}
@@ -180,6 +232,26 @@ export function EditProfileModal({
               placeholder="https://yourwebsite.com"
             />
           </div>
+
+          {/* Divider */}
+          {categories.length > 0 && (
+            <>
+              <div className="border-t border-gray-200 pt-6">
+                <h3 className="text-lg font-medium text-gray-900 mb-1">Your Signals</h3>
+                <p className="text-sm text-gray-600 mb-4">
+                  Select signals to let others know what you&apos;re up to
+                </p>
+              </div>
+
+              {/* Signal Chip Editor */}
+              <SignalChipEditor
+                userId={userId}
+                categories={categories}
+                signalsByCategory={signalsByCategory}
+                userSignals={userSignals}
+              />
+            </>
+          )}
         </div>
 
         {/* Footer */}

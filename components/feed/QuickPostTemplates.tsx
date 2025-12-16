@@ -21,7 +21,6 @@ interface QuickPostTemplatesProps {
 interface Template {
   id: string
   name: string
-  icon: string
   description: string
   postType: 'update' | 'help_request' | 'offering_help' | 'project' | 'collaboration'
   urgent: boolean
@@ -42,7 +41,6 @@ export function QuickPostTemplates({
     {
       id: 'available-today',
       name: 'Available Today',
-      icon: '⚡',
       description: 'Post that you\'re available for work today',
       postType: 'update',
       urgent: true,
@@ -51,7 +49,6 @@ export function QuickPostTemplates({
     {
       id: 'available-week',
       name: 'Available This Week',
-      icon: '🟢',
       description: 'Post your availability for this week',
       postType: 'update',
       urgent: false,
@@ -60,7 +57,6 @@ export function QuickPostTemplates({
     {
       id: 'hiring-urgent',
       name: 'Hiring Urgently',
-      icon: '🔴',
       description: 'Need someone ASAP',
       postType: 'help_request',
       urgent: true,
@@ -220,19 +216,16 @@ export function QuickPostTemplates({
               onClick={() => handleTemplateClick(template)}
               className="w-full text-left p-4 rounded-lg border-2 border-gray-200 hover:border-gray-900 hover:bg-gray-50 transition-all"
             >
-              <div className="flex items-start gap-3">
-                <span className="text-2xl">{template.icon}</span>
-                <div className="flex-1">
-                  <h3 className="font-medium text-gray-900 mb-1">
-                    {template.name}
-                    {template.urgent && (
-                      <span className="ml-2 px-2 py-0.5 text-xs font-semibold rounded-full bg-red-100 text-red-700">
-                        URGENT
-                      </span>
-                    )}
-                  </h3>
-                  <p className="text-sm text-gray-600">{template.description}</p>
-                </div>
+              <div>
+                <h3 className="font-medium text-gray-900 mb-1">
+                  {template.name}
+                  {template.urgent && (
+                    <span className="ml-2 px-2 py-0.5 text-xs font-semibold rounded-full bg-red-100 text-red-700">
+                      URGENT
+                    </span>
+                  )}
+                </h3>
+                <p className="text-sm text-gray-600">{template.description}</p>
               </div>
             </button>
           ))}

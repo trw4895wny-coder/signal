@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
+import { filterPostsByDistance } from '@/lib/distance'
 
 // GET /api/posts - Get smart-matched feed
 export async function GET(request: Request) {
@@ -15,8 +16,21 @@ export async function GET(request: Request) {
 
   const { searchParams } = new URL(request.url)
   const feedType = searchParams.get('type') || 'smart' // 'smart', 'connections', 'own'
+  const distanceParam = searchParams.get('distance') // Distance in miles
 
   try {
+    // Get user's profile for location filtering
+    let userProfile = null
+    if (distanceParam) {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('latitude, longitude')
+        .eq('id', user.id)
+        .single()
+
+      userProfile = profile
+    }
+
     if (feedType === 'own') {
       // Get user's own posts
       const { data: posts, error } = await (supabase as any)
@@ -31,6 +45,7 @@ export async function GET(request: Request) {
           post_comments(id)
         `)
         .eq('user_id', user.id)
+        .eq('archived', false)
         .or(`expires_at.is.null,expires_at.gt.${new Date().toISOString()}`)
         .order('created_at', { ascending: false })
 
@@ -77,6 +92,7 @@ export async function GET(request: Request) {
         post_reactions(id, reaction_type, user_id),
         post_comments(id)
       `)
+      .eq('archived', false)
       .or(`expires_at.is.null,expires_at.gt.${new Date().toISOString()}`)
       .order('created_at', { ascending: false })
       .limit(100)
@@ -149,6 +165,17 @@ export async function GET(request: Request) {
       filteredPosts = scoredPosts.filter((p: ScoredPost) => connectionUserIds.includes(p.user_id))
     }
 
+    // Apply distance filter if requested
+    if (distanceParam && userProfile?.latitude && userProfile?.longitude) {
+      const maxDistance = parseInt(distanceParam, 10)
+      filteredPosts = filterPostsByDistance(
+        filteredPosts,
+        userProfile.latitude,
+        userProfile.longitude,
+        maxDistance
+      )
+    }
+
     return NextResponse.json(filteredPosts.slice(0, 50))
   } catch (error: any) {
     console.error('Error fetching posts:', error)
@@ -179,6 +206,13 @@ export async function POST(request: Request) {
       )
     }
 
+    // Get user's profile for location
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('city, state, country, latitude, longitude')
+      .eq('id', user.id)
+      .single()
+
     // Calculate expiration
     let expires_at = null
     if (expires_in_days && expires_in_days > 0) {
@@ -186,7 +220,7 @@ export async function POST(request: Request) {
       expires_at.setDate(expires_at.getDate() + expires_in_days)
     }
 
-    // Create post
+    // Create post with user's location
     const { data: post, error: postError } = await (supabase as any)
       .from('posts')
       .insert({
@@ -195,6 +229,11 @@ export async function POST(request: Request) {
         post_type,
         visibility: visibility || 'public',
         expires_at,
+        city: profile?.city,
+        state: profile?.state,
+        country: profile?.country,
+        latitude: profile?.latitude,
+        longitude: profile?.longitude,
       })
       .select()
       .single()
