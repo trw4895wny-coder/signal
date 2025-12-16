@@ -20,7 +20,7 @@ export async function GET(request: Request) {
 
   try {
     // Get user's profile for location filtering
-    let userProfile: { latitude: number; longitude: number } | null = null
+    let userProfile: { latitude: number | null; longitude: number | null } | null = null
     if (distanceParam) {
       const { data: profile } = await supabase
         .from('profiles')
@@ -28,7 +28,7 @@ export async function GET(request: Request) {
         .eq('id', user.id)
         .single()
 
-      userProfile = profile
+      userProfile = profile as { latitude: number | null; longitude: number | null } | null
     }
 
     if (feedType === 'own') {
@@ -166,7 +166,12 @@ export async function GET(request: Request) {
     }
 
     // Apply distance filter if requested
-    if (distanceParam && userProfile?.latitude && userProfile?.longitude) {
+    if (
+      distanceParam &&
+      userProfile &&
+      userProfile.latitude !== null &&
+      userProfile.longitude !== null
+    ) {
       const maxDistance = parseInt(distanceParam, 10)
       filteredPosts = filterPostsByDistance(
         filteredPosts,
