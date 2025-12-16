@@ -20,7 +20,7 @@ interface ProfileOverviewProps {
 export function ProfileOverview({ userId, profile }: ProfileOverviewProps) {
   const [isEditingProfile, setIsEditingProfile] = useState(false)
   const [currentProfile] = useState(profile)
-  const [avatarKey, setAvatarKey] = useState(Date.now())
+  const [avatarKey, setAvatarKey] = useState(0) // Start with 0, update only after profile changes
   const [connectionStats, setConnectionStats] = useState({
     total: 0,
     pending: 0,
@@ -77,7 +77,7 @@ export function ProfileOverview({ userId, profile }: ProfileOverviewProps) {
             <div className="w-full h-full rounded-full overflow-hidden bg-gray-900 text-white flex items-center justify-center text-4xl font-medium shadow-lg">
               {currentProfile.avatar_url ? (
                 <img
-                  src={`${currentProfile.avatar_url}?t=${avatarKey}`}
+                  src={`${currentProfile.avatar_url}${avatarKey ? `?t=${avatarKey}` : ''}`}
                   alt={currentProfile.full_name || 'Profile'}
                   className="w-full h-full object-cover"
                 />
