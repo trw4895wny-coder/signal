@@ -3,6 +3,8 @@
 import { useEffect, useState, useCallback } from 'react'
 import { CreatePost } from './CreatePost'
 import { PostCard } from './PostCard'
+import { FloatingActionButton } from './FloatingActionButton'
+import { QuickPostTemplates } from './QuickPostTemplates'
 import { SparklesIcon } from '@heroicons/react/24/outline'
 
 interface FeedContentProps {
@@ -11,7 +13,7 @@ interface FeedContentProps {
 
 interface Signal {
   id: string
-  name: string
+  label: string
   category_id: string
 }
 
@@ -34,7 +36,7 @@ interface Post {
   post_signals?: Array<{
     signal: {
       id: string
-      name: string
+      label: string
     }
   }>
 }
@@ -42,8 +44,10 @@ interface Post {
 export function FeedContent({ userId }: FeedContentProps) {
   const [posts, setPosts] = useState<Post[]>([])
   const [userSignals, setUserSignals] = useState<Signal[]>([])
+  const [userProfile, setUserProfile] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [feedType, setFeedType] = useState<'smart' | 'connections'>('smart')
+  const [showQuickPost, setShowQuickPost] = useState(false)
 
   const fetchPosts = useCallback(async () => {
     try {
@@ -64,19 +68,28 @@ export function FeedContent({ userId }: FeedContentProps) {
   }, [fetchPosts])
 
   useEffect(() => {
-    // Fetch user signals
-    async function fetchUserSignals() {
+    // Fetch user signals and profile
+    async function fetchUserData() {
       try {
-        const response = await fetch(`/api/user-signals?userId=${userId}`)
-        if (response.ok) {
-          const data = await response.json()
+        const [signalsRes, profileRes] = await Promise.all([
+          fetch(`/api/user-signals?userId=${userId}`),
+          fetch(`/api/profiles/${userId}`)
+        ])
+
+        if (signalsRes.ok) {
+          const data = await signalsRes.json()
           setUserSignals(data.map((us: any) => us.signal))
         }
+
+        if (profileRes.ok) {
+          const profile = await profileRes.json()
+          setUserProfile(profile)
+        }
       } catch (error) {
-        console.error('Error fetching user signals:', error)
+        console.error('Error fetching user data:', error)
       }
     }
-    fetchUserSignals()
+    fetchUserData()
   }, [userId])
 
   const handlePostCreated = () => {
@@ -185,6 +198,20 @@ export function FeedContent({ userId }: FeedContentProps) {
             </div>
           )}
         </>
+      )}
+
+      {/* Floating Action Button */}
+      <FloatingActionButton onClick={() => setShowQuickPost(true)} />
+
+      {/* Quick Post Templates Modal */}
+      {showQuickPost && userProfile && (
+        <QuickPostTemplates
+          userId={userId}
+          userSignals={userSignals}
+          userProfile={userProfile}
+          onClose={() => setShowQuickPost(false)}
+          onPostCreated={handlePostCreated}
+        />
       )}
     </div>
   )

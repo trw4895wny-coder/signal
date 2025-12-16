@@ -13,7 +13,7 @@ interface CreatePostProps {
 
 interface Signal {
   id: string
-  name: string
+  label: string
   category_id: string
 }
 
@@ -148,7 +148,7 @@ export function CreatePost({ userId, onPostCreated }: CreatePostProps) {
                           : 'bg-white text-gray-700 border border-gray-300 hover:border-gray-400'
                       }`}
                     >
-                      {signal.name}
+                      {signal.label}
                     </button>
                   ))}
                 </div>

@@ -15,7 +15,7 @@ import { EditPostModal } from './EditPostModal'
 
 interface Signal {
   id: string
-  name: string
+  label: string
   category_id: string
 }
 
@@ -38,7 +38,7 @@ interface PostCardProps {
     post_signals?: Array<{
       signal: {
         id: string
-        name: string
+        label: string
       }
     }>
   }
@@ -194,7 +194,7 @@ export function PostCard({ post, currentUserId, userSignals, onRefresh }: PostCa
               key={ps.signal.id}
               className="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs"
             >
-              {ps.signal.name}
+              {ps.signal.label}
             </span>
           ))}
         </div>

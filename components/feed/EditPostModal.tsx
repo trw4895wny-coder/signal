@@ -5,7 +5,7 @@ import { XMarkIcon } from '@heroicons/react/24/outline'
 
 interface Signal {
   id: string
-  name: string
+  label: string
   category_id: string
 }
 
@@ -17,7 +17,7 @@ interface EditPostModalProps {
     post_signals?: Array<{
       signal: {
         id: string
-        name: string
+        label: string
       }
     }>
   }
@@ -155,7 +155,7 @@ export function EditPostModal({ post, userSignals, onClose, onSave }: EditPostMo
                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
                   >
-                    {signal.name}
+                    {signal.label}
                   </button>
                 ))}
               </div>
