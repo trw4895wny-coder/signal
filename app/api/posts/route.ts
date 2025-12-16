@@ -25,7 +25,7 @@ export async function GET(request: Request) {
           *,
           user:user_id(id, email, full_name, headline, avatar_url),
           post_signals(
-            signal:signal_id(id, name, category_id)
+            signal:signal_id(id, label, category_id)
           ),
           post_reactions(id, reaction_type, user_id),
           post_comments(id)
@@ -48,7 +48,7 @@ export async function GET(request: Request) {
     // Get user's active signals for smart matching
     const { data: userSignals } = await (supabase as any)
       .from('user_signals')
-      .select('signal_id, signal:signal_id(id, name, category_id)')
+      .select('signal_id, signal:signal_id(id, label, category_id)')
       .eq('user_id', user.id)
       .or(`expires_at.is.null,expires_at.gt.${new Date().toISOString()}`)
 
@@ -65,19 +65,18 @@ export async function GET(request: Request) {
       c.requester_id === user.id ? c.receiver_id : c.requester_id
     ) || []
 
-    // Fetch all posts with user and signal info
+    // Fetch all posts with user and signal info (including user's own posts)
     const { data: allPosts, error } = await (supabase as any)
       .from('posts')
       .select(`
         *,
         user:user_id(id, email, full_name, headline, avatar_url),
         post_signals(
-          signal:signal_id(id, name, category_id)
+          signal:signal_id(id, label, category_id)
         ),
         post_reactions(id, reaction_type, user_id),
         post_comments(id)
       `)
-      .neq('user_id', user.id)
       .or(`expires_at.is.null,expires_at.gt.${new Date().toISOString()}`)
       .order('created_at', { ascending: false })
       .limit(100)
@@ -95,13 +94,25 @@ export async function GET(request: Request) {
       let score = 0
       let matchReason = ''
 
+      // Boost user's own posts (especially recent ones)
+      if (post.user_id === user.id) {
+        const ageInHours = (Date.now() - new Date(post.created_at).getTime()) / (1000 * 60 * 60)
+        if (ageInHours < 24) {
+          score += 50 // Very high boost for posts less than 24 hours old
+          matchReason = 'Your post'
+        } else {
+          score += 10 // Still boost older own posts
+          matchReason = 'Your post'
+        }
+      }
+
       // Score based on signal overlap
       const postSignalIds = post.post_signals?.map((ps: any) => ps.signal.id) || []
       const signalOverlap = postSignalIds.filter((id: string) => userSignalIds.includes(id))
 
       if (signalOverlap.length > 0) {
         score += signalOverlap.length * 10
-        matchReason = `Matches your "${post.post_signals[0]?.signal?.name}" signal`
+        if (!matchReason) matchReason = `Matches your "${post.post_signals[0]?.signal?.label}" signal`
       }
 
       // Boost connection posts
@@ -110,7 +121,7 @@ export async function GET(request: Request) {
         if (!matchReason) matchReason = 'From your connections'
       }
 
-      // Boost help requests if user has offering_help posts
+      // Boost help requests
       if (post.post_type === 'help_request') {
         score += 3
         if (!matchReason) matchReason = 'Help request'
